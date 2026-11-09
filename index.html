@@ -37,13 +37,23 @@ main{padding-top:clamp(2rem,6vh,5rem)}h1{background:linear-gradient(110deg,#fff6
 .sprite img{filter:drop-shadow(0 0 13px #e4bb7866)}.cast{align-items:end}dialog{border-color:#b6a57b;background:linear-gradient(155deg,#1f3051,#10162e)}
 @media(max-width:540px){.orbit{grid-template-columns:repeat(2,minmax(0,1fr))}.bubble{min-height:6rem}}
 @media(prefers-reduced-motion:reduce){*,*::before,*::after{animation:none!important}}
+
+.portrait-stage{isolation:isolate;position:relative;display:flex;align-items:end;justify-content:center;gap:clamp(.8rem,5vw,2.2rem);width:min(100%,28rem);height:clamp(8.5rem,30vw,14rem);margin:.4rem auto 1rem}
+.portrait-stage::before,.portrait-stage::after{content:"";position:absolute;z-index:-1;inset:22% 6% 10%;border-radius:50%;transform:rotate(-14deg);border:1px solid #7ce7dc77;box-shadow:0 0 2rem #7ce7dc40,inset 0 0 2rem #9a7aff32}
+.portrait-stage::after{inset:30% 1% 3%;transform:rotate(12deg);border-color:#ffdb9155;box-shadow:0 0 1.4rem #ffdb9128}
+.portrait-stage img{display:block;width:auto;height:100%;max-width:40%;object-fit:contain;object-position:bottom;filter:drop-shadow(0 0 1.2rem #9ddfff66);animation:portrait-rise .8s ease-out both}.portrait-stage img:last-child{animation-delay:.13s}.portrait-stage span{align-self:center;color:var(--gold);text-shadow:0 0 1rem var(--gold);animation:twinkle 2.3s ease-in-out infinite alternate}
+@keyframes portrait-rise{from{opacity:0;transform:translateY(14px)}}
+.letters{margin:1.2rem auto}.status{margin-top:.45rem}.bubble{position:relative;overflow:hidden;text-align:left;display:grid;align-content:center;justify-items:start;gap:.22rem;padding:1rem;border-radius:1.35rem}.bubble::after{content:"✧";position:absolute;right:.7rem;top:.45rem;color:#8dbcd4;font-size:1.1rem}.bubble.lit::after{content:"✦";color:var(--gold)}.bubble b{line-height:1.25}.bubble .bubble-caption{line-height:1.3;color:#c4d0e8}.bubble .bubble-status{font-weight:700;margin-top:.3rem;color:var(--mint)}.bubble.lit .bubble-status{color:var(--gold)}
+#unlock{margin:1.35rem auto;padding:1rem;border:1px solid #eac98566;border-radius:1.5rem;max-width:26rem;background:radial-gradient(ellipse at 50% 30%,#5a3d2e88,#101a32)}.scene-step{color:var(--mint);font-size:.85rem}.close-memory{position:absolute;right:.6rem;top:.55rem;width:2.65rem;height:2.65rem;padding:0;font-size:1.4rem}
+@media(max-width:380px){.bubble{padding:.65rem}.bubble::after{right:.5rem}}
 </style>
 <div class="sky" aria-hidden="true"><div class="comet"></div></div>
 <main><ol class="journey" aria-label="Recorrido"><li id="step-entry" aria-current="step">1 · Une las letras</li><li id="step-orbit">2 · Abre los recuerdos</li><li id="step-ending">3 · Última estrella</li></ol>
 <section id="entry">
 <div class="eyebrow">Un cielo de recuerdos</div>
 <h1>Mi estrella fugaz</h1>
-<p>Una estrella cruzó el cielo y dejó unas letras en su estela. Tócalas en orden para formar <strong id="target"></strong>.</p>
+<div class="portrait-stage" aria-hidden="true"><img src="./assets/mahiru-gala.svg" alt="" width="269" height="360"><span>✦</span><img src="./assets/amane-gala.svg" alt="" width="199" height="360"></div>
+<p>Toca las letras en orden para encender el nombre <strong id="target"></strong>.</p>
 <div id="letters" class="letters"><svg aria-hidden="true"><polyline id="threads"></polyline></svg></div>
 <div id="word" class="word" role="group" aria-label="Letras encontradas"></div>
 <p id="hint" class="status" aria-live="polite"></p>
@@ -55,17 +65,17 @@ main{padding-top:clamp(2rem,6vh,5rem)}h1{background:linear-gradient(110deg,#fff6
 <div class="orbit" id="bubbles"></div><p id="progress" aria-live="polite"></p><progress id="orbit-meter" value="0" max="6" aria-label="Estrellas encendidas"></progress>
 <div id="unlock" hidden>
 <svg class="constellation" viewBox="0 0 240 116" aria-hidden="true"><path d="M19 73 56 30 111 17 174 36 220 80 127 104 19 73M111 17 127 104"/><circle cx="19" cy="73" r="3"/><circle cx="56" cy="30" r="3"/><circle cx="111" cy="17" r="3"/><circle cx="174" cy="36" r="3"/><circle cx="220" cy="80" r="3"/><circle cx="127" cy="104" r="3"/></svg>
-<div class="actions"><button id="finale" class="primary">Abrir la última estrella</button></div>
+<div class="actions"><button id="finale" class="primary">✦ Abrir la última estrella</button></div>
 </div>
 <div class="actions"><button id="back">Volver al cielo</button></div>
 </section>
 <section id="ending" hidden>
 <div class="eyebrow">La última estrella</div><h2>Míranos ahora</h2>
-<div id="scene"></div>
+<p class="scene-step" id="scene-step" aria-live="polite"></p><div id="scene"></div>
 <div class="actions"><button id="next" class="primary">Abrir la ventana</button><button id="return">Volver al aro</button></div>
 </section>
 </main>
-<dialog id="memory" aria-labelledby="memory-title"><div class="eyebrow">En la estela</div><h2 id="memory-title"></h2><div id="memory-body" class="memory-body"></div><form method="dialog" class="actions"><button>Volver a la constelación</button></form></dialog>
+<dialog id="memory" aria-labelledby="memory-title"><form method="dialog"><button class="close-memory" aria-label="Cerrar recuerdo">×</button></form><div class="eyebrow">En la estela</div><h2 id="memory-title"></h2><div id="memory-body" class="memory-body"></div><form method="dialog" class="actions"><button>Volver a la constelación</button></form></dialog>
 <script>
 const get = id => document.getElementById(id);
 const sections = ['entry', 'orbit', 'ending'];
@@ -83,13 +93,13 @@ const memories = [
     "songs",
     "♫",
     "100 canciones",
-    "<article><small>Recuerdo musical · 01</small><h3>Sin miedo · Piter G</h3><p>Empezó como una canción que nos gustaba a los dos. Años después la cantamos a todo pulmón en la misma casa.</p><button id=\"replay\" hidden>Volver a esa noche</button></article><p>Las canciones del regalo irán apareciendo aquí.</p>"
+    "<article><small>Recuerdo musical · 01</small><h3>Sin miedo · Piter G</h3><p>Empezó como una canción que nos gustaba a los dos. Años después la cantamos a todo pulmón en la misma casa.</p><button id=\"replay\" hidden>Volver a esa noche</button></article><article><small>Letra original · Borrador</small><h3>Del chat al concierto</h3><p>De un mensaje que casi no mandé<br>a cantar en la misma habitación.<br>Tú dijiste «míranos ahora»<br>y entendí por qué guardé esta canción.</p></article><p>Este borrador todavía está pendiente de grabación.</p>"
   ],
   [
     "letters",
     "✉",
     "100 cartas",
-    "<small>5 cartas disponibles de 100</small><details><summary>01 · Cada vez que barro mal</summary><p>Mahiru, un día nos tocó limpiar el salón y viniste a regañarnos porque lo estábamos haciendo mal. Luego nos enseñaste cómo se hacía. Hay días de primaria que ya casi no recuerdo, pero, si estoy limpiando la casa y hago algo mal, todavía me acuerdo de ti llegando a corregirnos. Espero que eso te dé al menos la mitad de risa que me da a mí.</p><p>— Amane</p></details><details><summary>02 · La primera vez que te vi</summary><p>Tú dices que nos conocimos en cuarto. Yo tengo guardado un recuerdo de segundo. Mi mamá daba clases en tu primaria y un día me tocó acompañarla. Ahí te vi, cuando tu mamá fue por ti. En ese momento yo ni siquiera estudiaba ahí. Cuando volviste en cuarto, por fin empezamos a pasar tiempo juntos. Ahora me da risa pensar que llevamos años contando dos comienzos y que yo quiero guardar los dos.</p><p>— Amane</p></details><details><summary>03 · Escribiendo…</summary><p>Conseguí tu número en prepa y tuve que armarme de valor para mandarte un mensaje. Me daba pena escribirte, y acabamos mandándonos videos desde que nos levantábamos. Luego venía el chisme mientras comíamos y, a veces, una llamada que todavía seguía al día siguiente. Si hubiera sabido eso cuando tenía el teléfono en la mano, igual me habría puesto nervioso. Pero habría mandado el mensaje más rápido.</p><p>— Amane</p></details><details><summary>04 · El pino en el chat</summary><p>Me acuerdo de que para decorar nuestro pino por turnos necesitábamos una cosa de cada quien y una foto después de cada cambio. Al final el chat estaba lleno de fotos casi iguales. Si alguien más las viera, probablemente se preguntaría para qué guardamos tantas. Yo las vería una por una, porque todavía me da gusto recordar que nos tomamos toda esa molestia para hacer algo juntos.</p><p>— Amane</p></details><details><summary>05 · Un concierto en la sala</summary><p>Cuando éramos niños dijimos que algún día estaríamos juntos en una casa. Nunca dijimos qué haríamos cuando llegara ese día. Resulta que la respuesta era cantar Sin miedo a todo pulmón frente a Julie y Tobey. Me acuerdo de tu abrazo y de cuando dijiste que éramos tan pequeños. Me sigue dando risa que cumpliéramos la promesa haciendo escándalo. Me sigue dando gusto que la cumpliéramos.</p><p>— Amane</p></details>"
+    "<small>7 cartas disponibles de 100</small><details><summary>01 · Cada vez que barro mal</summary><p>Mahiru, un día nos tocó limpiar el salón y viniste a regañarnos porque lo estábamos haciendo mal. Luego nos enseñaste cómo se hacía. Hay días de primaria que ya casi no recuerdo, pero, si estoy limpiando la casa y hago algo mal, todavía me acuerdo de ti llegando a corregirnos. Espero que eso te dé al menos la mitad de risa que me da a mí.</p><p>— Amane</p></details><details><summary>02 · La primera vez que te vi</summary><p>Tú dices que nos conocimos en cuarto. Yo tengo guardado un recuerdo de segundo. Mi mamá daba clases en tu primaria y un día me tocó acompañarla. Ahí te vi, cuando tu mamá fue por ti. En ese momento yo ni siquiera estudiaba ahí. Cuando volviste en cuarto, por fin empezamos a pasar tiempo juntos. Ahora me da risa pensar que llevamos años contando dos comienzos y que yo quiero guardar los dos.</p><p>— Amane</p></details><details><summary>03 · Escribiendo…</summary><p>Conseguí tu número en prepa y tuve que armarme de valor para mandarte un mensaje. Me daba pena escribirte, y acabamos mandándonos videos desde que nos levantábamos. Luego venía el chisme mientras comíamos y, a veces, una llamada que todavía seguía al día siguiente. Si hubiera sabido eso cuando tenía el teléfono en la mano, igual me habría puesto nervioso. Pero habría mandado el mensaje más rápido.</p><p>— Amane</p></details><details><summary>04 · El pino en el chat</summary><p>Me acuerdo de que para decorar nuestro pino por turnos necesitábamos una cosa de cada quien y una foto después de cada cambio. Al final el chat estaba lleno de fotos casi iguales. Si alguien más las viera, probablemente se preguntaría para qué guardamos tantas. Yo las vería una por una, porque todavía me da gusto recordar que nos tomamos toda esa molestia para hacer algo juntos.</p><p>— Amane</p></details><details><summary>05 · Un concierto en la sala</summary><p>Cuando éramos niños dijimos que algún día estaríamos juntos en una casa. Nunca dijimos qué haríamos cuando llegara ese día. Resulta que la respuesta era cantar Sin miedo a todo pulmón frente a Julie y Tobey. Me acuerdo de tu abrazo y de cuando dijiste que éramos tan pequeños. Me sigue dando risa que cumpliéramos la promesa haciendo escándalo. Me sigue dando gusto que la cumpliéramos.</p><p>— Amane</p></details><details><summary>06 · Hasta mañana, supongo</summary><p>Hubo llamadas que empezaron un día y terminaron al siguiente. A veces pienso en cuánto chisme tendría que haber para justificar tantas horas. Luego me acuerdo de que también nos mandábamos videos mientras comíamos y entiendo que a nosotros cualquier excusa nos servía para acompañarnos.</p><p>— Amane</p></details><details><summary>07 · Una pregunta inoportuna</summary><p>De todas las cosas que pude decirte cuando te volví a ver en secundaria, escogí preguntarte si ya tenías novio. Nunca voy a entender por qué me pareció un saludo normal. A estas alturas, con todo lo que te has reído a mi costa, creo que ya puedes admitir que te hice un gran regalo ese día.</p><p>— Amane</p></details>"
   ],
   [
     "comics",
@@ -206,6 +216,10 @@ function updateOrbit() {
   get('orbit-meter').value = total;
   get('unlock').hidden = total !== memories.length;
 }
+const descriptions = {
+  memories: 'De primaria al reencuentro', songs: 'Música y recuerdos', letters: 'Palabras de Amane',
+  comics: 'Anécdotas en viñetas', art: 'Un pino para decorar', stickers: 'Los personajes del concierto'
+};
 for (const [id, symbol, title, copy] of memories) {
   const button = document.createElement('button');
   button.className = 'bubble';
@@ -213,8 +227,14 @@ for (const [id, symbol, title, copy] of memories) {
   icon.setAttribute('aria-hidden', 'true');
   icon.textContent = symbol;
   const badge = document.createElement('small');
-  badge.textContent = seen.has(id) ? '✦ Encendida' : 'Toca para abrir';
-  button.append(icon, title, badge);
+  badge.className = 'bubble-status';
+  badge.textContent = seen.has(id) ? 'Encendida' : 'Por descubrir';
+  const label = document.createElement('b');
+  label.textContent = title;
+  const caption = document.createElement('small');
+  caption.className = 'bubble-caption';
+  caption.textContent = descriptions[id];
+  button.append(icon, label, caption, badge);
   button.classList.toggle('lit', seen.has(id));
   button.addEventListener('click', () => {
     get('memory-title').textContent = title;
@@ -222,7 +242,7 @@ for (const [id, symbol, title, copy] of memories) {
     get('memory').showModal();
     if (!seen.has(id)) sparkle(button);
     seen.add(id);
-    badge.textContent = '✦ Encendida';
+    badge.textContent = 'Encendida';
     saved.seen = [...seen];
     save();
     button.classList.add('lit');
@@ -268,6 +288,7 @@ const scenes = [
 let stage = 0;
 function renderScene() {
   const [content, label] = scenes[stage];
+  get('scene-step').textContent = 'Escena ' + (stage + 1) + ' de ' + scenes.length;
   const scene = get('scene');
   scene.classList.remove('arriving');
   scene.innerHTML = content;
