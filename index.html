@@ -1,0 +1,201 @@
+<!doctype html>
+<html lang="es">
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<meta name="theme-color" content="#080c1a">
+<title>Mi estrella fugaz</title>
+<style>
+:root{color-scheme:dark;--night:#080c1a;--ink:#f3f3f6;--muted:#b1bdd3;--gold:#ffdb91;--mint:#90e6da}
+*{box-sizing:border-box}body{margin:0;min-height:100svh;background:radial-gradient(ellipse at 50% 82%,#142945,transparent 66%),var(--night);color:var(--ink);font:1rem/1.6 system-ui,sans-serif}
+.sky{position:fixed;inset:0;pointer-events:none;overflow:hidden}.sky i{position:absolute;width:2px;height:2px;background:white;border-radius:50%;box-shadow:0 0 7px #c8e5ff}
+.comet{position:absolute;top:19%;left:59%;width:32vw;height:2px;background:linear-gradient(90deg,transparent,#73dacf,var(--gold));transform:rotate(-26deg);filter:drop-shadow(0 0 8px #84e9d9);animation:arrive 1.7s ease both}.comet::after{content:"";position:absolute;right:0;top:-3px;width:8px;height:8px;border-radius:50%;background:var(--gold);box-shadow:0 0 18px var(--gold)}
+@keyframes arrive{from{translate:-36vw 18vw;opacity:0}to{translate:0;opacity:1}}
+main{position:relative;width:min(100% - 2rem,55rem);margin:auto;text-align:center;padding:clamp(3rem,10vh,7rem) 0 3rem}
+.eyebrow{font-size:.7rem;font-weight:700;letter-spacing:.26em;text-transform:uppercase;color:var(--mint)}h1,h2{font-family:Georgia,serif;font-weight:400;line-height:1.06}h1{font-size:clamp(3rem,10vw,7rem);margin:.2em 0;color:#fff2d5}h2{font-size:clamp(2rem,6vw,4rem);margin:.2em 0}p{margin:.65rem auto;max-width:39ch;color:var(--muted)}strong{color:var(--gold)}
+button{font:inherit;color:inherit;cursor:pointer;border:1px solid #5a718c;background:#111f35;border-radius:2rem;padding:.65rem 1.1rem}button:hover,button:focus-visible{border-color:var(--mint);outline:2px solid transparent;box-shadow:0 0 0 2px #90e6da88}button:disabled{cursor:default}button:disabled:hover{box-shadow:none}
+.letters{position:relative;display:grid;grid-template-columns:repeat(3,1fr);gap:1.05rem;justify-items:center;max-width:23rem;margin:1.8rem auto}.letters svg{position:absolute;inset:0;width:100%;height:100%;overflow:visible;pointer-events:none}.letters polyline{fill:none;stroke:var(--gold);stroke-width:2;filter:drop-shadow(0 0 5px var(--gold))}
+.letter{position:relative;width:3.65rem;height:3.65rem;border-radius:50%;padding:0;font:1.4rem Georgia,serif;animation:float 3s ease-in-out infinite alternate;animation-delay:var(--delay)}@keyframes float{to{transform:translateY(-5px)}}.letter.lit{animation:none;background:#44361d;border-color:var(--gold);color:var(--gold);box-shadow:0 0 23px #ffdb9166}
+.word{min-height:1.6em;letter-spacing:.44em;color:var(--gold)}.status{min-height:1.6em}.primary{background:#ffdb91;color:#171626;border-color:#ffdb91;font-weight:700}.actions{display:flex;justify-content:center;gap:.7rem;flex-wrap:wrap;margin-top:1.4rem}
+.orbit{position:relative;isolation:isolate;display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:.75rem;max-width:34rem;margin:2rem auto}.orbit::before{content:"";position:absolute;inset:-.6rem -1rem;border:1px solid #90e6da44;border-radius:50%;z-index:-1;box-shadow:0 0 30px #90e6da22,inset 0 0 30px #90e6da15}.bubble{min-height:5rem;border-radius:2rem;background:#132340e8}.bubble span{display:block;color:var(--mint);font-size:1.2rem}.bubble.lit{border-color:var(--gold);background:#3a3025}.bubble.lit span{color:var(--gold)}
+.constellation{width:min(85%,16rem);margin:1rem auto 0;display:block;overflow:visible}.constellation path{fill:none;stroke:#ffe1a0;stroke-width:1;stroke-dasharray:450;animation:trace 1.5s ease both}.constellation circle{fill:var(--gold);filter:drop-shadow(0 0 5px var(--gold))}@keyframes trace{from{stroke-dashoffset:450}}
+dialog{width:min(32rem,calc(100% - 2rem));max-height:85svh;overflow:auto;border:1px solid #627c9e;border-radius:1.4rem;background:#101b30;color:var(--ink);padding:2rem;text-align:center}dialog::backdrop{background:#040813cc}.window{width:8.5rem;height:7rem;margin:1.4rem auto;display:grid;place-items:center;border:6px double #f4cb7f;border-radius:3.5rem 3.5rem .4rem .4rem;background:radial-gradient(#ffecc0,#b57634);color:#26180e;box-shadow:0 0 45px #ffa83d60;font-size:2.6rem}.cast{display:flex;justify-content:center;gap:1rem;flex-wrap:wrap;margin:1.4rem 0}.sprite{width:3.8rem;display:grid;justify-items:center;gap:.3rem;font-size:.68rem;color:var(--muted)}.sprite svg{width:3.5rem;height:3.5rem;overflow:visible}.singers svg{animation:bounce .65s ease-in-out infinite alternate}.singers:nth-child(2) svg{animation-delay:.2s}@keyframes bounce{to{translate:0 -7px;rotate:5deg}}
+blockquote{margin:1.2rem auto;font:1.55rem/1.35 Georgia,serif;color:var(--gold)}[hidden]{display:none!important}@media(prefers-reduced-motion:reduce){*,*::before,*::after{animation:none!important}}
+</style>
+<div class="sky" aria-hidden="true"><div class="comet"></div></div>
+<main>
+<section id="entry">
+<div class="eyebrow">Un cielo de recuerdos</div>
+<h1>Mi estrella fugaz</h1>
+<p>Una estrella cruzó el cielo y dejó unas letras en su estela. Tócalas en orden para formar <strong id="target"></strong>.</p>
+<div id="letters" class="letters"><svg aria-hidden="true"><polyline id="threads"></polyline></svg></div>
+<div id="word" class="word" aria-label="Letras encontradas"></div>
+<p id="hint" class="status" aria-live="polite"></p>
+<div class="actions"><button id="enter" class="primary" hidden>Seguir la estela</button><button id="resume" hidden>Volver al aro</button></div>
+</section>
+<section id="orbit" hidden>
+<div class="eyebrow">En la estela del cometa</div><h2>El aro de recuerdos</h2>
+<p>Abre cada burbuja para encender una estrella.</p>
+<div class="orbit" id="bubbles"></div><p id="progress" aria-live="polite"></p>
+<div id="unlock" hidden>
+<svg class="constellation" viewBox="0 0 240 116" aria-hidden="true"><path d="M19 73 56 30 111 17 174 36 220 80 127 104 19 73M111 17 127 104"/><circle cx="19" cy="73" r="3"/><circle cx="56" cy="30" r="3"/><circle cx="111" cy="17" r="3"/><circle cx="174" cy="36" r="3"/><circle cx="220" cy="80" r="3"/><circle cx="127" cy="104" r="3"/></svg>
+<div class="actions"><button id="finale" class="primary">Abrir la última estrella</button></div>
+</div>
+<div class="actions"><button id="back">Volver al cielo</button></div>
+</section>
+<section id="ending" hidden>
+<div class="eyebrow">La última estrella</div><h2>Míranos ahora</h2>
+<div id="scene"></div>
+<div class="actions"><button id="next" class="primary">Abrir la ventana</button><button id="return">Volver al aro</button></div>
+</section>
+</main>
+<dialog id="memory" aria-labelledby="memory-title"><div class="eyebrow">En la estela</div><h2 id="memory-title"></h2><p id="memory-copy"></p><form method="dialog" class="actions"><button>Volver a la constelación</button></form></dialog>
+<script>
+const get = id => document.getElementById(id);
+const sections = ['entry', 'orbit', 'ending'];
+const key = 'mi-estrella-fugaz-v1';
+let saved = {};
+try { saved = JSON.parse(localStorage.getItem(key)) || {}; } catch {}
+const memories = [
+  ['memories', '✧', 'Desde el principio', 'Hay dos primeras veces: la primera vez que nos vimos y la primera vez que empezamos a ser amigos.'],
+  ['songs', '♫', '100 canciones', 'Hay canciones que guardan una época entera. La primera estrella de esta colección está dedicada a Sin miedo, de Piter G.'],
+  ['letters', '✉', '100 cartas', 'Primera nota: hay días que se me olvidan completos, pero todavía me acuerdo de ti cuando hago mal el aseo.'],
+  ['comics', '▤', 'Nuestra historia en viñetas', 'Capítulo en preparación: un encuentro inesperado, una pregunta muy inoportuna y una broma que duró años.'],
+  ['art', '✎', 'El cuaderno de dibujos', 'Este espacio guarda un lugar para nuestras dos versiones: los niños que hicieron la promesa y quienes llegaron a cumplirla.'],
+  ['stickers', '☄', 'La caja de stickers', 'Cuatro lugares reservados para Mahiru, Amane y el público de su concierto improvisado.']
+];
+const seen = new Set(Array.isArray(saved.seen) ? saved.seen : []);
+const target = saved.next === 'AMANE' ? 'AMANE' : 'MAHIRU';
+function save() {
+  try { localStorage.setItem(key, JSON.stringify(saved)); } catch {}
+}
+saved.next = target === 'MAHIRU' ? 'AMANE' : 'MAHIRU';
+save();
+function show(id) {
+  for (const section of sections) get(section).hidden = section !== id;
+  const heading = get(id).querySelector('h1,h2');
+  heading.tabIndex = -1;
+  heading.focus();
+}
+for (let i = 0; i < 105; i++) {
+  const star = document.createElement('i');
+  star.style.cssText = 'left:' + ((i * 137.51) % 100) + '%;top:' + ((i * 71.73) % 100) + '%;opacity:' + (.16 + (i % 7) * .1);
+  document.querySelector('.sky').append(star);
+}
+get('target').textContent = target;
+get('resume').hidden = !saved.entered;
+const letters = [...target];
+for (let i = letters.length - 1; i > 0; i--) {
+  const j = Math.floor(Math.random() * (i + 1));
+  [letters[i], letters[j]] = [letters[j], letters[i]];
+}
+const chosen = [];
+function drawThreads() {
+  const area = get('letters').getBoundingClientRect();
+  get('threads').setAttribute('points', chosen.map(button => {
+    const rect = button.getBoundingClientRect();
+    return (rect.left - area.left + rect.width / 2) + ',' + (rect.top - area.top + rect.height / 2);
+  }).join(' '));
+}
+window.addEventListener('resize', drawThreads);
+letters.forEach((letter, index) => {
+  const button = document.createElement('button');
+  button.className = 'letter';
+  button.textContent = letter;
+  button.style.setProperty('--delay', (-index * .45) + 's');
+  button.addEventListener('click', () => {
+    if (letter !== target[chosen.length]) {
+      get('hint').textContent = 'Busca la letra ' + target[chosen.length] + '.';
+      return;
+    }
+    chosen.push(button);
+    button.classList.add('lit');
+    button.disabled = true;
+    drawThreads();
+    get('word').textContent = chosen.map(item => item.textContent).join('');
+    const complete = chosen.length === target.length;
+    get('hint').textContent = complete ? 'La estela ya está encendida.' : '';
+    get('enter').hidden = !complete;
+    if (complete) get('enter').focus();
+    else {
+      const remaining = [...get('letters').querySelectorAll('button')].filter(item => !item.disabled);
+      (remaining.find(item => item.compareDocumentPosition(button) & Node.DOCUMENT_POSITION_PRECEDING) || remaining[0]).focus();
+    }
+  });
+  get('letters').append(button);
+});
+function updateOrbit() {
+  const total = memories.filter(([id]) => seen.has(id)).length;
+  get('progress').textContent = total + ' de ' + memories.length + ' estrellas encendidas';
+  get('unlock').hidden = total !== memories.length;
+}
+for (const [id, symbol, title, copy] of memories) {
+  const button = document.createElement('button');
+  button.className = 'bubble';
+  const icon = document.createElement('span');
+  icon.setAttribute('aria-hidden', 'true');
+  icon.textContent = symbol;
+  button.append(icon, title);
+  button.classList.toggle('lit', seen.has(id));
+  button.addEventListener('click', () => {
+    get('memory-title').textContent = title;
+    get('memory-copy').textContent = copy;
+    get('memory').showModal();
+    seen.add(id);
+    saved.seen = [...seen];
+    save();
+    button.classList.add('lit');
+    updateOrbit();
+  });
+  get('bubbles').append(button);
+}
+updateOrbit();
+function openOrbit() {
+  saved.entered = true;
+  save();
+  get('resume').hidden = false;
+  show('orbit');
+}
+get('enter').onclick = openOrbit;
+get('resume').onclick = openOrbit;
+get('back').onclick = () => { show('entry'); drawThreads(); };
+get('return').onclick = () => show('orbit');
+const cast = [
+  ['Mahiru', '#f4bf62', '#613b31'],
+  ['Amane', '#73c9cc', '#2c3045'],
+  ['Julie', '#ee9eae', '#633d38'],
+  ['Tobey', '#94a8e3', '#77523d']
+];
+function sprites(singing) {
+  return '<div class="cast">' + cast.map(([name, shirt, hair], index) =>
+    '<div class="sprite ' + (singing && index < 2 ? 'singers' : '') + '"><svg aria-hidden="true" viewBox="0 0 56 56">' +
+    '<path d="M14 55v-8q0-13 14-13t14 13v8" fill="' + shirt + '"/><circle cx="28" cy="24" r="17" fill="#f7c9a5"/>' +
+    '<path d="M11 24C8 1 43 0 45 22c-8-2-13-6-16-10-3 6-10 9-18 12Z" fill="' + hair + '"/>' +
+    '<circle cx="22" cy="25" r="1.6" fill="#262039"/><circle cx="34" cy="25" r="1.6" fill="#262039"/>' +
+    (singing && index < 2 ? '<ellipse cx="28" cy="32" rx="3" ry="3.5" fill="#713d49"/>' : '<path d="M25 31q3 4 6 0" fill="none" stroke="#713d49"/>') +
+    '</svg>' + name + '</div>').join('') + '</div>';
+}
+const scenes = [
+  ['<div class="window" aria-hidden="true">✦</div><p>De niños nos prometimos que algún día pasaríamos tiempo juntos en una casa.</p>', 'Abrir la ventana'],
+  [sprites(true) + '<p>Y cuando por fin pasó, Mahiru y Amane cantaron <em>Sin miedo</em> a todo pulmón. A Julie y Tobey se nos olvidó avisarles que habría concierto.</p>', 'Seguir'],
+  [sprites(false) + '<blockquote>«Éramos tan pequeños… y míranos ahora»</blockquote><p>Todavía me acuerdo de cómo sonreíste cuando me abrazaste y me lo dijiste.</p>', 'Encender la última estrella'],
+  ['<div class="window" aria-hidden="true">✦</div><h2>Feliz cumpleaños, Sarai</h2><p>Gracias por todos esos recuerdos, Mahiru.</p>', '']
+];
+let stage = 0;
+function renderScene() {
+  const [content, label] = scenes[stage];
+  get('scene').innerHTML = content;
+  get('next').textContent = label;
+  get('next').hidden = !label;
+}
+get('finale').onclick = () => { stage = 0; renderScene(); show('ending'); };
+get('next').onclick = () => {
+  if (stage < scenes.length - 1) stage++;
+  renderScene();
+  if (get('next').hidden) {
+    const heading = get('scene').querySelector('h2');
+    heading.tabIndex = -1;
+    heading.focus();
+  }
+};
+</script>
+</html>
