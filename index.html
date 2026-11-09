@@ -20,6 +20,7 @@ button{font:inherit;color:inherit;cursor:pointer;border:1px solid #5a718c;backgr
 .constellation{width:min(85%,16rem);margin:1rem auto 0;display:block;overflow:visible}.constellation path{fill:none;stroke:#ffe1a0;stroke-width:1;stroke-dasharray:450;animation:trace 1.5s ease both}.constellation circle{fill:var(--gold);filter:drop-shadow(0 0 5px var(--gold))}@keyframes trace{from{stroke-dashoffset:450}}
 dialog{width:min(32rem,calc(100% - 2rem));max-height:85svh;overflow:auto;border:1px solid #627c9e;border-radius:1.4rem;background:#101b30;color:var(--ink);padding:2rem;text-align:center}dialog::backdrop{background:#040813cc}.window{width:8.5rem;height:7rem;margin:1.4rem auto;display:grid;place-items:center;border:6px double #f4cb7f;border-radius:3.5rem 3.5rem .4rem .4rem;background:radial-gradient(#ffecc0,#b57634);color:#26180e;box-shadow:0 0 45px #ffa83d60;font-size:2.6rem}.cast{display:flex;justify-content:center;gap:1rem;flex-wrap:wrap;margin:1.4rem 0}.sprite{width:3.8rem;display:grid;justify-items:center;gap:.3rem;font-size:.68rem;color:var(--muted)}.sprite svg{width:3.5rem;height:3.5rem;overflow:visible}.singers svg{animation:bounce .65s ease-in-out infinite alternate}.singers:nth-child(2) svg{animation-delay:.2s}@keyframes bounce{to{translate:0 -7px;rotate:5deg}}
 blockquote{margin:1.2rem auto;font:1.55rem/1.35 Georgia,serif;color:var(--gold)}[hidden]{display:none!important}@media(prefers-reduced-motion:reduce){*,*::before,*::after{animation:none!important}}
+.memory-body{text-align:left;margin:1.25rem 0}.memory-body details,.memory-body article,.memory-body li{margin:.7rem 0;border:1px solid #4d6483;border-radius:1rem;padding:.8rem 1rem;background:#172741}.memory-body summary{cursor:pointer;color:var(--gold);font-weight:650}.memory-body p{max-width:none}.memory-body h3{color:var(--gold);margin:.4rem 0}.memory-body small{color:var(--mint)}.tree{display:block;width:min(100%,13rem);margin:auto}#turn{text-align:center}.living-room{max-width:32rem;margin:1.4rem auto;border:1px solid #aa774c;border-radius:5rem 5rem 1rem 1rem;padding:1rem .6rem;background:radial-gradient(ellipse at top,#704c32,#15223a 75%);box-shadow:0 0 2rem #ffba6933}.last-star{color:var(--gold);font-size:4rem;text-shadow:0 0 2rem #ffcc78;animation:arrive 1s ease both}
 </style>
 <div class="sky" aria-hidden="true"><div class="comet"></div></div>
 <main>
@@ -48,7 +49,7 @@ blockquote{margin:1.2rem auto;font:1.55rem/1.35 Georgia,serif;color:var(--gold)}
 <div class="actions"><button id="next" class="primary">Abrir la ventana</button><button id="return">Volver al aro</button></div>
 </section>
 </main>
-<dialog id="memory" aria-labelledby="memory-title"><div class="eyebrow">En la estela</div><h2 id="memory-title"></h2><p id="memory-copy"></p><form method="dialog" class="actions"><button>Volver a la constelación</button></form></dialog>
+<dialog id="memory" aria-labelledby="memory-title"><div class="eyebrow">En la estela</div><h2 id="memory-title"></h2><div id="memory-body" class="memory-body"></div><form method="dialog" class="actions"><button>Volver a la constelación</button></form></dialog>
 <script>
 const get = id => document.getElementById(id);
 const sections = ['entry', 'orbit', 'ending'];
@@ -56,12 +57,42 @@ const key = 'mi-estrella-fugaz-v1';
 let saved = {};
 try { saved = JSON.parse(localStorage.getItem(key)) || {}; } catch {}
 const memories = [
-  ['memories', '✧', 'Desde el principio', 'Hay dos primeras veces: la primera vez que nos vimos y la primera vez que empezamos a ser amigos.'],
-  ['songs', '♫', '100 canciones', 'Hay canciones que guardan una época entera. La primera estrella de esta colección está dedicada a Sin miedo, de Piter G.'],
-  ['letters', '✉', '100 cartas', 'Primera nota: hay días que se me olvidan completos, pero todavía me acuerdo de ti cuando hago mal el aseo.'],
-  ['comics', '▤', 'Nuestra historia en viñetas', 'Capítulo en preparación: un encuentro inesperado, una pregunta muy inoportuna y una broma que duró años.'],
-  ['art', '✎', 'El cuaderno de dibujos', 'Este espacio guarda un lugar para nuestras dos versiones: los niños que hicieron la promesa y quienes llegaron a cumplirla.'],
-  ['stickers', '☄', 'La caja de stickers', 'Cuatro lugares reservados para Mahiru, Amane y el público de su concierto improvisado.']
+  [
+    "memories",
+    "✧",
+    "Desde el principio",
+    "<details open><summary>Segundo de primaria · La primera vez que te vi</summary><p>Yo iba a otra escuela. Un día acompañé a mi mamá a la primaria donde daba clases y te vi cuando tu mamá fue por ti.</p></details><details><summary>Cuarto de primaria · Cuando nos hicimos amigos</summary><p>Me cambié a tu primaria en tercero y tú ya no estabas. Volviste en cuarto. Ahí empezamos a pasar tiempo juntos y a molestarnos como solo dos niños saben hacerlo.</p></details><details><summary>Prepa · El mensaje que sí mandé</summary><p>Conseguí tu número gracias a una amiga y me armé de valor para escribirte. Después vinieron los videos al despertar, el chisme mientras comíamos y las llamadas que llegaban al día siguiente.</p></details>"
+  ],
+  [
+    "songs",
+    "♫",
+    "100 canciones",
+    "<article><small>Recuerdo musical · 01</small><h3>Sin miedo · Piter G</h3><p>Empezó como una canción que nos gustaba a los dos. Años después la cantamos a todo pulmón en la misma casa.</p><button id=\"replay\" hidden>Volver a esa noche</button></article><p>Las canciones del regalo irán apareciendo aquí.</p>"
+  ],
+  [
+    "letters",
+    "✉",
+    "100 cartas",
+    "<small>1 carta disponible de 100</small><details><summary>01 · Cada vez que barro mal</summary><p>Mahiru, un día nos tocó limpiar el salón y viniste a regañarnos porque lo estábamos haciendo mal. Luego nos enseñaste cómo se hacía. Hay días de primaria que ya casi no recuerdo, pero, si estoy limpiando la casa y hago algo mal, todavía me acuerdo de ti llegando a corregirnos. Espero que eso te dé al menos la mitad de risa que me da a mí.</p><p>— Amane</p></details>"
+  ],
+  [
+    "comics",
+    "▤",
+    "Nuestra historia en viñetas",
+    "<small>Guion del primer cómic</small><h3>¿Ya conseguiste novio, eh?</h3><ol><li>Segundo de secundaria. Amane acompaña a su mamá a la primaria. Mahiru llega a buscar a su hermana.</li><li>Amane abre la boca antes de que su cerebro pueda detenerlo. «Holaaaa, ¿cómo estás? ¿Ya conseguiste novio, eh?»</li><li>Años después, Mahiru todavía tiene material para burlarse. Amane sigue esperando que prescriba.</li></ol>"
+  ],
+  [
+    "art",
+    "✎",
+    "El cuaderno de dibujos",
+    "<h3>Un pino a distancia</h3><p>Nos turnábamos para decorar el pino y mandarnos fotos. Vamos a reconstruirlo.</p><svg class=\"tree\" viewBox=\"0 0 180 180\" role=\"img\" aria-label=\"Pino navideño\"><path d=\"M82 146h16v23H82z\" fill=\"#855434\"/><path d=\"M90 16 47 75h18l-35 39h24l-32 37h136l-32-37h24l-35-39h18z\" fill=\"#245f53\" stroke=\"#8bd7bd\"/></svg><div class=\"actions\"><button id=\"decorate\">Poner un adorno</button></div><p id=\"turn\" aria-live=\"polite\" tabindex=\"-1\">Turno de Mahiru</p>"
+  ],
+  [
+    "stickers",
+    "☄",
+    "La caja de stickers",
+    "<p>Vista previa de los cuatro personajes del concierto.</p>"
+  ]
 ];
 const seen = new Set(Array.isArray(saved.seen) ? saved.seen : []);
 const target = saved.next === 'AMANE' ? 'AMANE' : 'MAHIRU';
@@ -138,13 +169,14 @@ for (const [id, symbol, title, copy] of memories) {
   button.classList.toggle('lit', seen.has(id));
   button.addEventListener('click', () => {
     get('memory-title').textContent = title;
-    get('memory-copy').textContent = copy;
+    get('memory-body').innerHTML = copy;
     get('memory').showModal();
     seen.add(id);
     saved.seen = [...seen];
     save();
     button.classList.add('lit');
     updateOrbit();
+    prepareMemory(id);
   });
   get('bubbles').append(button);
 }
@@ -165,8 +197,8 @@ const cast = [
   ['Julie', '#ee9eae', '#633d38'],
   ['Tobey', '#94a8e3', '#77523d']
 ];
-function sprites(singing) {
-  return '<div class="cast">' + cast.map(([name, shirt, hair], index) =>
+function sprites(singing, duo = false) {
+  return '<div class="cast">' + (duo ? cast.slice(0, 2) : cast).map(([name, shirt, hair], index) =>
     '<div class="sprite ' + (singing && index < 2 ? 'singers' : '') + '"><svg aria-hidden="true" viewBox="0 0 56 56">' +
     '<path d="M14 55v-8q0-13 14-13t14 13v8" fill="' + shirt + '"/><circle cx="28" cy="24" r="17" fill="#f7c9a5"/>' +
     '<path d="M11 24C8 1 43 0 45 22c-8-2-13-6-16-10-3 6-10 9-18 12Z" fill="' + hair + '"/>' +
@@ -176,9 +208,9 @@ function sprites(singing) {
 }
 const scenes = [
   ['<div class="window" aria-hidden="true">✦</div><p>De niños nos prometimos que algún día pasaríamos tiempo juntos en una casa.</p>', 'Abrir la ventana'],
-  [sprites(true) + '<p>Y cuando por fin pasó, Mahiru y Amane cantaron <em>Sin miedo</em> a todo pulmón. A Julie y Tobey se nos olvidó avisarles que habría concierto.</p>', 'Seguir'],
-  [sprites(false) + '<blockquote>«Éramos tan pequeños… y míranos ahora»</blockquote><p>Todavía me acuerdo de cómo sonreíste cuando me abrazaste y me lo dijiste.</p>', 'Encender la última estrella'],
-  ['<div class="window" aria-hidden="true">✦</div><h2>Feliz cumpleaños, Sarai</h2><p>Gracias por todos esos recuerdos, Mahiru.</p>', '']
+  ['<div class="living-room"><div class="eyebrow">Concierto en la sala</div>' + sprites(true) + '</div><p>Y cuando por fin pasó, Mahiru y Amane cantaron <em>Sin miedo</em> a todo pulmón. A Julie y Tobey se nos olvidó avisarles que habría concierto.</p>', 'Seguir'],
+  [sprites(false, true) + '<blockquote>«Éramos tan pequeños… y míranos ahora»</blockquote><p>Todavía me acuerdo de cómo sonreíste cuando me abrazaste y me lo dijiste.</p>', 'Encender la última estrella'],
+  ['<div class="last-star" aria-hidden="true">✦</div><h2>Feliz cumpleaños, Sarai</h2>' + sprites(false, true) + '<p>Gracias por todos esos recuerdos, Mahiru.</p>', '']
 ];
 let stage = 0;
 function renderScene() {
@@ -187,11 +219,49 @@ function renderScene() {
   get('next').textContent = label;
   get('next').hidden = !label;
 }
-get('finale').onclick = () => { stage = 0; renderScene(); show('ending'); };
+function openFinale() {
+  stage = 0;
+  renderScene();
+  show('ending');
+}
+get('finale').onclick = openFinale;
+function prepareMemory(id) {
+  if (id === 'songs' && saved.finished) {
+    const replay = get('replay');
+    replay.hidden = false;
+    replay.onclick = () => {
+      get('memory').close();
+      openFinale();
+    };
+  }
+  if (id === 'stickers') get('memory-body').insertAdjacentHTML('beforeend', sprites(false));
+  if (id === 'art') {
+    const positions = [[90,38],[72,75],[106,69],[57,112],[93,106],[122,124],[78,137],[110,143]];
+    const colors = ['#ffdb91','#90e6da','#f49eae'];
+    const button = get('decorate');
+    const tree = get('memory-body').querySelector('svg');
+    let count = 0;
+    button.onclick = () => {
+      const [x,y] = positions[count];
+      const ornament = document.createElementNS('http://www.w3.org/2000/svg','circle');
+      ornament.setAttribute('cx',x);
+      ornament.setAttribute('cy',y);
+      ornament.setAttribute('r',4);
+      ornament.setAttribute('fill',colors[count % colors.length]);
+      tree.append(ornament);
+      count++;
+      button.disabled = count === positions.length;
+      get('turn').textContent = button.disabled ? 'Así quedó nuestro pino.' : 'Turno de ' + (count % 2 ? 'Amane' : 'Mahiru');
+      if (button.disabled) get('turn').focus();
+    };
+  }
+}
 get('next').onclick = () => {
   if (stage < scenes.length - 1) stage++;
   renderScene();
   if (get('next').hidden) {
+    saved.finished = true;
+    save();
     const heading = get('scene').querySelector('h2');
     heading.tabIndex = -1;
     heading.focus();
