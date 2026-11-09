@@ -73,7 +73,7 @@ const memories = [
     "letters",
     "✉",
     "100 cartas",
-    "<small>1 carta disponible de 100</small><details><summary>01 · Cada vez que barro mal</summary><p>Mahiru, un día nos tocó limpiar el salón y viniste a regañarnos porque lo estábamos haciendo mal. Luego nos enseñaste cómo se hacía. Hay días de primaria que ya casi no recuerdo, pero, si estoy limpiando la casa y hago algo mal, todavía me acuerdo de ti llegando a corregirnos. Espero que eso te dé al menos la mitad de risa que me da a mí.</p><p>— Amane</p></details>"
+    "<small>4 cartas disponibles de 100</small><details><summary>01 · Cada vez que barro mal</summary><p>Mahiru, un día nos tocó limpiar el salón y viniste a regañarnos porque lo estábamos haciendo mal. Luego nos enseñaste cómo se hacía. Hay días de primaria que ya casi no recuerdo, pero, si estoy limpiando la casa y hago algo mal, todavía me acuerdo de ti llegando a corregirnos. Espero que eso te dé al menos la mitad de risa que me da a mí.</p><p>— Amane</p></details><details><summary>02 · La primera vez que te vi</summary><p>Tú dices que nos conocimos en cuarto. Yo tengo guardado un recuerdo de segundo. Mi mamá daba clases en tu primaria y un día me tocó acompañarla. Ahí te vi, cuando tu mamá fue por ti. En ese momento yo ni siquiera estudiaba ahí. Cuando volviste en cuarto, por fin empezamos a pasar tiempo juntos. Ahora me da risa pensar que llevamos años contando dos comienzos y que yo quiero guardar los dos.</p><p>— Amane</p></details><details><summary>03 · Escribiendo…</summary><p>Conseguí tu número en prepa y tuve que armarme de valor para mandarte un mensaje. Me daba pena escribirte, y acabamos mandándonos videos desde que nos levantábamos. Luego venía el chisme mientras comíamos y, a veces, una llamada que todavía seguía al día siguiente. Si hubiera sabido eso cuando tenía el teléfono en la mano, igual me habría puesto nervioso. Pero habría mandado el mensaje más rápido.</p><p>— Amane</p></details><details><summary>04 · El pino en el chat</summary><p>Me acuerdo de que para decorar nuestro pino por turnos necesitábamos una cosa de cada quien y una foto después de cada cambio. Al final el chat estaba lleno de fotos casi iguales. Si alguien más las viera, probablemente se preguntaría para qué guardamos tantas. Yo las vería una por una, porque todavía me da gusto recordar que nos tomamos toda esa molestia para hacer algo juntos.</p><p>— Amane</p></details>"
   ],
   [
     "comics",
@@ -241,7 +241,7 @@ function prepareMemory(id) {
     const button = get('decorate');
     const tree = get('memory-body').querySelector('svg');
     let count = 0;
-    button.onclick = () => {
+    function addOrnament() {
       const [x,y] = positions[count];
       const ornament = document.createElementNS('http://www.w3.org/2000/svg','circle');
       ornament.setAttribute('cx',x);
@@ -252,6 +252,14 @@ function prepareMemory(id) {
       count++;
       button.disabled = count === positions.length;
       get('turn').textContent = button.disabled ? 'Así quedó nuestro pino.' : 'Turno de ' + (count % 2 ? 'Amane' : 'Mahiru');
+    }
+    const previous = Number.isInteger(saved.ornaments) ? Math.max(0, Math.min(saved.ornaments, positions.length)) : 0;
+    while (count < previous) addOrnament();
+    button.onclick = () => {
+      if (button.disabled) return;
+      addOrnament();
+      saved.ornaments = count;
+      save();
       if (button.disabled) get('turn').focus();
     };
   }
