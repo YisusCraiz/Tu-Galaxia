@@ -4,6 +4,9 @@
 <meta name="viewport" content="width=device-width,initial-scale=1">
 <meta name="theme-color" content="#080c1a">
 <title>Mi estrella fugaz</title>
+<link rel="manifest" href="./manifest.webmanifest">
+<link rel="icon" href="./assets/icon-192.png" type="image/png">
+<link rel="apple-touch-icon" href="./assets/icon-180.png">
 <style>
 :root{color-scheme:dark;--night:#080c1a;--ink:#f3f3f6;--muted:#b1bdd3;--gold:#ffdb91;--mint:#90e6da}
 *{box-sizing:border-box}body{margin:0;min-height:100svh;background:radial-gradient(ellipse at 50% 82%,#142945,transparent 66%),var(--night);color:var(--ink);font:1rem/1.6 system-ui,sans-serif}
@@ -46,6 +49,7 @@ main{padding-top:clamp(2rem,6vh,5rem)}h1{background:linear-gradient(110deg,#fff6
 .letters{margin:1.2rem auto}.status{margin-top:.45rem}.bubble{position:relative;overflow:hidden;text-align:left;display:grid;align-content:center;justify-items:start;gap:.22rem;padding:1rem;border-radius:1.35rem}.bubble::after{content:"✧";position:absolute;right:.7rem;top:.45rem;color:#8dbcd4;font-size:1.1rem}.bubble.lit::after{content:"✦";color:var(--gold)}.bubble b{line-height:1.25}.bubble .bubble-caption{line-height:1.3;color:#c4d0e8}.bubble .bubble-status{font-weight:700;margin-top:.3rem;color:var(--mint)}.bubble.lit .bubble-status{color:var(--gold)}
 #unlock{margin:1.35rem auto;padding:1rem;border:1px solid #eac98566;border-radius:1.5rem;max-width:26rem;background:radial-gradient(ellipse at 50% 30%,#5a3d2e88,#101a32)}.scene-step{color:var(--mint);font-size:.85rem}.close-memory{position:absolute;right:.6rem;top:.55rem;width:2.65rem;height:2.65rem;padding:0;font-size:1.4rem}
 @media(max-width:380px){.bubble{padding:.65rem}.bubble::after{right:.5rem}}
+.install-panel{display:flex;justify-content:center;margin:2rem auto 0}.install-panel button{border-color:#a9c8db;background:#152741}.install-panel img{width:1.65rem;height:1.65rem;border-radius:.42rem;vertical-align:middle;margin-right:.45rem}#install-help ol{text-align:left;color:var(--muted);padding-left:1.4rem}
 </style>
 <div class="sky" aria-hidden="true"><div class="comet"></div></div>
 <main><ol class="journey" aria-label="Recorrido"><li id="step-entry" aria-current="step">1 · Une las letras</li><li id="step-orbit">2 · Abre los recuerdos</li><li id="step-ending">3 · Última estrella</li></ol>
@@ -74,7 +78,13 @@ main{padding-top:clamp(2rem,6vh,5rem)}h1{background:linear-gradient(110deg,#fff6
 <p class="scene-step" id="scene-step" aria-live="polite"></p><div id="scene"></div>
 <div class="actions"><button id="next" class="primary">Abrir la ventana</button><button id="return">Volver al aro</button></div>
 </section>
+<footer class="install-panel" id="install-panel"><button type="button" id="install-app"><img src="./assets/icon-192.png" alt="" width="26" height="26">Instalar en mi celular</button></footer>
 </main>
+<dialog id="install-help" aria-labelledby="install-title">
+<h2 id="install-title">Lleva la galaxia contigo</h2>
+<ol><li><strong>Android:</strong> abre esta página en Chrome y toca el menú ⋮. Elige <b>Instalar aplicación</b> o <b>Añadir a pantalla de inicio</b>.</li>
+<li><strong>iPhone:</strong> ábrela en Safari, toca <b>Compartir</b> y elige <b>Añadir a pantalla de inicio</b>. Si aparece <b>Abrir como app web</b>, déjalo activado.</li></ol>
+<form method="dialog" class="actions"><button>Entendido</button></form></dialog>
 <dialog id="memory" aria-labelledby="memory-title"><form method="dialog"><button class="close-memory" aria-label="Cerrar recuerdo">×</button></form><div class="eyebrow">En la estela</div><h2 id="memory-title"></h2><div id="memory-body" class="memory-body"></div><form method="dialog" class="actions"><button>Volver a la constelación</button></form></dialog>
 <script>
 const get = id => document.getElementById(id);
@@ -99,7 +109,7 @@ const memories = [
     "letters",
     "✉",
     "100 cartas",
-    "<small>7 cartas disponibles de 100</small><details><summary>01 · Cada vez que barro mal</summary><p>Mahiru, un día nos tocó limpiar el salón y viniste a regañarnos porque lo estábamos haciendo mal. Luego nos enseñaste cómo se hacía. Hay días de primaria que ya casi no recuerdo, pero, si estoy limpiando la casa y hago algo mal, todavía me acuerdo de ti llegando a corregirnos. Espero que eso te dé al menos la mitad de risa que me da a mí.</p><p>— Amane</p></details><details><summary>02 · La primera vez que te vi</summary><p>Tú dices que nos conocimos en cuarto. Yo tengo guardado un recuerdo de segundo. Mi mamá daba clases en tu primaria y un día me tocó acompañarla. Ahí te vi, cuando tu mamá fue por ti. En ese momento yo ni siquiera estudiaba ahí. Cuando volviste en cuarto, por fin empezamos a pasar tiempo juntos. Ahora me da risa pensar que llevamos años contando dos comienzos y que yo quiero guardar los dos.</p><p>— Amane</p></details><details><summary>03 · Escribiendo…</summary><p>Conseguí tu número en prepa y tuve que armarme de valor para mandarte un mensaje. Me daba pena escribirte, y acabamos mandándonos videos desde que nos levantábamos. Luego venía el chisme mientras comíamos y, a veces, una llamada que todavía seguía al día siguiente. Si hubiera sabido eso cuando tenía el teléfono en la mano, igual me habría puesto nervioso. Pero habría mandado el mensaje más rápido.</p><p>— Amane</p></details><details><summary>04 · El pino en el chat</summary><p>Me acuerdo de que para decorar nuestro pino por turnos necesitábamos una cosa de cada quien y una foto después de cada cambio. Al final el chat estaba lleno de fotos casi iguales. Si alguien más las viera, probablemente se preguntaría para qué guardamos tantas. Yo las vería una por una, porque todavía me da gusto recordar que nos tomamos toda esa molestia para hacer algo juntos.</p><p>— Amane</p></details><details><summary>05 · Un concierto en la sala</summary><p>Cuando éramos niños dijimos que algún día estaríamos juntos en una casa. Nunca dijimos qué haríamos cuando llegara ese día. Resulta que la respuesta era cantar Sin miedo a todo pulmón frente a Julie y Tobey. Me acuerdo de tu abrazo y de cuando dijiste que éramos tan pequeños. Me sigue dando risa que cumpliéramos la promesa haciendo escándalo. Me sigue dando gusto que la cumpliéramos.</p><p>— Amane</p></details><details><summary>06 · Hasta mañana, supongo</summary><p>Hubo llamadas que empezaron un día y terminaron al siguiente. A veces pienso en cuánto chisme tendría que haber para justificar tantas horas. Luego me acuerdo de que también nos mandábamos videos mientras comíamos y entiendo que a nosotros cualquier excusa nos servía para acompañarnos.</p><p>— Amane</p></details><details><summary>07 · Una pregunta inoportuna</summary><p>De todas las cosas que pude decirte cuando te volví a ver en secundaria, escogí preguntarte si ya tenías novio. Nunca voy a entender por qué me pareció un saludo normal. A estas alturas, con todo lo que te has reído a mi costa, creo que ya puedes admitir que te hice un gran regalo ese día.</p><p>— Amane</p></details>"
+    "<small>8 cartas disponibles de 100</small><details><summary>01 · Cada vez que barro mal</summary><p>Mahiru, un día nos tocó limpiar el salón y viniste a regañarnos porque lo estábamos haciendo mal. Luego nos enseñaste cómo se hacía. Hay días de primaria que ya casi no recuerdo, pero, si estoy limpiando la casa y hago algo mal, todavía me acuerdo de ti llegando a corregirnos. Espero que eso te dé al menos la mitad de risa que me da a mí.</p><p>— Amane</p></details><details><summary>02 · La primera vez que te vi</summary><p>Tú dices que nos conocimos en cuarto. Yo tengo guardado un recuerdo de segundo. Mi mamá daba clases en tu primaria y un día me tocó acompañarla. Ahí te vi, cuando tu mamá fue por ti. En ese momento yo ni siquiera estudiaba ahí. Cuando volviste en cuarto, por fin empezamos a pasar tiempo juntos. Ahora me da risa pensar que llevamos años contando dos comienzos y que yo quiero guardar los dos.</p><p>— Amane</p></details><details><summary>03 · Escribiendo…</summary><p>Conseguí tu número en prepa y tuve que armarme de valor para mandarte un mensaje. Me daba pena escribirte, y acabamos mandándonos videos desde que nos levantábamos. Luego venía el chisme mientras comíamos y, a veces, una llamada que todavía seguía al día siguiente. Si hubiera sabido eso cuando tenía el teléfono en la mano, igual me habría puesto nervioso. Pero habría mandado el mensaje más rápido.</p><p>— Amane</p></details><details><summary>04 · El pino en el chat</summary><p>Me acuerdo de que para decorar nuestro pino por turnos necesitábamos una cosa de cada quien y una foto después de cada cambio. Al final el chat estaba lleno de fotos casi iguales. Si alguien más las viera, probablemente se preguntaría para qué guardamos tantas. Yo las vería una por una, porque todavía me da gusto recordar que nos tomamos toda esa molestia para hacer algo juntos.</p><p>— Amane</p></details><details><summary>05 · Un concierto en la sala</summary><p>Cuando éramos niños dijimos que algún día estaríamos juntos en una casa. Nunca dijimos qué haríamos cuando llegara ese día. Resulta que la respuesta era cantar Sin miedo a todo pulmón frente a Julie y Tobey. Me acuerdo de tu abrazo y de cuando dijiste que éramos tan pequeños. Me sigue dando risa que cumpliéramos la promesa haciendo escándalo. Me sigue dando gusto que la cumpliéramos.</p><p>— Amane</p></details><details><summary>06 · Hasta mañana, supongo</summary><p>Hubo llamadas que empezaron un día y terminaron al siguiente. A veces pienso en cuánto chisme tendría que haber para justificar tantas horas. Luego me acuerdo de que también nos mandábamos videos mientras comíamos y entiendo que a nosotros cualquier excusa nos servía para acompañarnos.</p><p>— Amane</p></details><details><summary>07 · Una pregunta inoportuna</summary><p>De todas las cosas que pude decirte cuando te volví a ver en secundaria, escogí preguntarte si ya tenías novio. Nunca voy a entender por qué me pareció un saludo normal. A estas alturas, con todo lo que te has reído a mi costa, creo que ya puedes admitir que te hice un gran regalo ese día.</p><p>— Amane</p></details><details><summary>08 · Te la guardé</summary><p>Me acuerdo de cuando descubrimos que nos gustaba la misma canción. Ahora pienso en cuánto cambió todo entre escucharla cada quien por su lado y terminar cantándola juntos en la sala. Si algún día suena otra vez y te acuerdas de esa noche, quiero que sepas que a mí me pasa igual.</p><p>— Amane</p></details>"
   ],
   [
     "comics",
@@ -353,5 +363,33 @@ get('next').onclick = () => {
     heading.focus();
   }
 };
+const installPanel = get('install-panel');
+let installPrompt;
+const standalone = window.matchMedia('(display-mode: standalone)');
+installPanel.hidden = standalone.matches || navigator.standalone === true;
+window.addEventListener('beforeinstallprompt', event => {
+  event.preventDefault();
+  installPrompt = event;
+});
+window.addEventListener('appinstalled', () => {
+  installPrompt = undefined;
+  installPanel.hidden = true;
+});
+get('install-app').onclick = async () => {
+  if (!installPrompt) {
+    get('install-help').showModal();
+    return;
+  }
+  const prompt = installPrompt;
+  installPrompt = undefined;
+  try { await prompt.prompt(); } catch { get('install-help').showModal(); }
+};
+if ('serviceWorker' in navigator) {
+  window.addEventListener('load', () => {
+    navigator.serviceWorker.register('./sw.js').catch(error => {
+      console.warn('No se pudo activar el acceso sin conexión.', error);
+    });
+  });
+}
 </script>
 </html>

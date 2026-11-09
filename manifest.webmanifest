@@ -1,0 +1,26 @@
+{
+  "id": "./",
+  "name": "Mi estrella fugaz",
+  "short_name": "Mi estrella fugaz",
+  "description": "El cielo de recuerdos de Mahiru y Amane.",
+  "lang": "es",
+  "start_url": "./",
+  "scope": "./",
+  "display": "standalone",
+  "background_color": "#080c1a",
+  "theme_color": "#080c1a",
+  "icons": [
+    {
+      "src": "./assets/icon-192.png",
+      "sizes": "192x192",
+      "type": "image/png",
+      "purpose": "any"
+    },
+    {
+      "src": "./assets/icon-512.png",
+      "sizes": "512x512",
+      "type": "image/png",
+      "purpose": "any maskable"
+    }
+  ]
+}
