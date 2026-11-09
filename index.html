@@ -22,22 +22,37 @@ dialog{width:min(32rem,calc(100% - 2rem));max-height:85svh;overflow:auto;border:
 blockquote{margin:1.2rem auto;font:1.55rem/1.35 Georgia,serif;color:var(--gold)}[hidden]{display:none!important}@media(prefers-reduced-motion:reduce){*,*::before,*::after{animation:none!important}}
 .memory-body{text-align:left;margin:1.25rem 0}.memory-body details,.memory-body article,.memory-body li{margin:.7rem 0;border:1px solid #4d6483;border-radius:1rem;padding:.8rem 1rem;background:#172741}.memory-body summary{cursor:pointer;color:var(--gold);font-weight:650}.memory-body p{max-width:none}.memory-body h3{color:var(--gold);margin:.4rem 0}.memory-body small{color:var(--mint)}.tree{display:block;width:min(100%,13rem);margin:auto}#turn{text-align:center}.living-room{max-width:32rem;margin:1.4rem auto;border:1px solid #aa774c;border-radius:5rem 5rem 1rem 1rem;padding:1rem .6rem;background:radial-gradient(ellipse at top,#704c32,#15223a 75%);box-shadow:0 0 2rem #ffba6933}.last-star{color:var(--gold);font-size:4rem;text-shadow:0 0 2rem #ffcc78;animation:arrive 1s ease both}
 .sprite:has(img){width:clamp(3.8rem,16vw,7rem)}.sprite img{display:block;width:100%;height:clamp(5.5rem,24vw,10rem);object-fit:contain;object-position:center bottom;filter:drop-shadow(0 5px 10px #02050d80)}.cast{align-items:end}.singers img{animation:bounce .65s ease-in-out infinite alternate}.singers:nth-child(2) img{animation-delay:.2s}
+
+body{background:radial-gradient(ellipse at 25% 25%,#252a65aa,transparent 62%),radial-gradient(ellipse at 85% 75%,#12535e88,transparent 62%),#070a19}
+.sky::before{content:"";position:absolute;inset:-18%;background:radial-gradient(ellipse at 34% 42%,#6250c046,transparent 31%),radial-gradient(ellipse at 65% 55%,#36bcac37,transparent 34%);animation:nebula 14s ease-in-out infinite alternate}
+@keyframes nebula{to{transform:rotate(-9deg) scale(1.12);opacity:.65}}.sky i:nth-child(3n){animation:twinkle 3.5s ease-in-out infinite alternate;animation-delay:var(--delay)}@keyframes twinkle{to{opacity:.15;scale:.65}}
+.comet{width:42vw;height:3px;left:49%;filter:drop-shadow(0 0 14px #80f5dd)}.comet::after{width:11px;height:11px;top:-4px}
+main{padding-top:clamp(2rem,6vh,5rem)}h1{background:linear-gradient(110deg,#fff6dc 20%,#ffdc91 48%,#a4eee3 85%);background-clip:text;color:transparent;filter:drop-shadow(0 0 16px #f9ce7c38)}
+.journey{display:flex;flex-wrap:wrap;justify-content:center;gap:.45rem;list-style:none;padding:0;margin:0 auto 1.7rem}.journey li{border:1px solid #63769377;border-radius:2rem;padding:.25rem .62rem;color:var(--muted);font-size:.75rem;background:#0c1531}.journey [aria-current=step]{border-color:var(--gold);color:var(--gold);box-shadow:0 0 16px #ffdb9137}
+.letter{background:radial-gradient(circle at 35% 27%,#2e4971,#111f35 72%);box-shadow:0 0 18px #9dd8ff29}.word{display:flex;justify-content:center;gap:.35rem;letter-spacing:normal}.word span{display:grid;place-items:center;width:2.2rem;min-height:2.35rem;border-radius:.45rem .45rem 0 0;border-bottom:1px solid #7492b5;background:#131e39}.word .lit{border-color:var(--gold);box-shadow:0 4px 12px #ffdb9140}
+.orbit{grid-template-columns:repeat(3,minmax(0,1fr));max-width:43rem}.orbit::before{transform:rotate(-9deg);border-color:#85d8ed70}.bubble{min-height:7rem;padding:.65rem .48rem;background:radial-gradient(ellipse at top,#283c64,#101932 80%);border-color:#5676a5}.bubble span{font-size:1.65rem}.bubble small{display:block;font-size:.71rem;color:var(--muted)}.bubble.lit{background:radial-gradient(ellipse at top,#594128,#262339 80%);box-shadow:0 0 21px #ffdb9137}.bubble.lit small{color:var(--gold)}
+#orbit-meter{display:block;width:min(14rem,70%);height:.5rem;margin:.6rem auto;accent-color:#f7d582}.primary{box-shadow:0 0 24px #ffdb9140}
+.spark{position:fixed;z-index:3;pointer-events:none;width:6px;height:6px;border-radius:50%;background:var(--gold);box-shadow:0 0 10px var(--gold);animation:spark .6s ease-out forwards}@keyframes spark{to{transform:translate(var(--x),var(--y)) scale(.15);opacity:0}}
+#scene.arriving{animation:scene-in .48s ease-out both}@keyframes scene-in{from{opacity:0;transform:translateY(8px)}to{opacity:1;transform:translateY(0)}}
+.sprite img{filter:drop-shadow(0 0 13px #e4bb7866)}.cast{align-items:end}dialog{border-color:#b6a57b;background:linear-gradient(155deg,#1f3051,#10162e)}
+@media(max-width:540px){.orbit{grid-template-columns:repeat(2,minmax(0,1fr))}.bubble{min-height:6rem}}
+@media(prefers-reduced-motion:reduce){*,*::before,*::after{animation:none!important}}
 </style>
 <div class="sky" aria-hidden="true"><div class="comet"></div></div>
-<main>
+<main><ol class="journey" aria-label="Recorrido"><li id="step-entry" aria-current="step">1 · Une las letras</li><li id="step-orbit">2 · Abre los recuerdos</li><li id="step-ending">3 · Última estrella</li></ol>
 <section id="entry">
 <div class="eyebrow">Un cielo de recuerdos</div>
 <h1>Mi estrella fugaz</h1>
 <p>Una estrella cruzó el cielo y dejó unas letras en su estela. Tócalas en orden para formar <strong id="target"></strong>.</p>
 <div id="letters" class="letters"><svg aria-hidden="true"><polyline id="threads"></polyline></svg></div>
-<div id="word" class="word" aria-label="Letras encontradas"></div>
+<div id="word" class="word" role="group" aria-label="Letras encontradas"></div>
 <p id="hint" class="status" aria-live="polite"></p>
 <div class="actions"><button id="enter" class="primary" hidden>Seguir la estela</button><button id="resume" hidden>Volver al aro</button></div>
 </section>
 <section id="orbit" hidden>
 <div class="eyebrow">En la estela del cometa</div><h2>El aro de recuerdos</h2>
 <p>Abre cada burbuja para encender una estrella.</p>
-<div class="orbit" id="bubbles"></div><p id="progress" aria-live="polite"></p>
+<div class="orbit" id="bubbles"></div><p id="progress" aria-live="polite"></p><progress id="orbit-meter" value="0" max="6" aria-label="Estrellas encendidas"></progress>
 <div id="unlock" hidden>
 <svg class="constellation" viewBox="0 0 240 116" aria-hidden="true"><path d="M19 73 56 30 111 17 174 36 220 80 127 104 19 73M111 17 127 104"/><circle cx="19" cy="73" r="3"/><circle cx="56" cy="30" r="3"/><circle cx="111" cy="17" r="3"/><circle cx="174" cy="36" r="3"/><circle cx="220" cy="80" r="3"/><circle cx="127" cy="104" r="3"/></svg>
 <div class="actions"><button id="finale" class="primary">Abrir la última estrella</button></div>
@@ -103,7 +118,12 @@ function save() {
 saved.next = target === 'MAHIRU' ? 'AMANE' : 'MAHIRU';
 save();
 function show(id) {
-  for (const section of sections) get(section).hidden = section !== id;
+  for (const section of sections) {
+    get(section).hidden = section !== id;
+    const step = get('step-' + section);
+    if (section === id) step.setAttribute('aria-current', 'step');
+    else step.removeAttribute('aria-current');
+  }
   const heading = get(id).querySelector('h1,h2');
   heading.tabIndex = -1;
   heading.focus();
@@ -111,6 +131,7 @@ function show(id) {
 for (let i = 0; i < 105; i++) {
   const star = document.createElement('i');
   star.style.cssText = 'left:' + ((i * 137.51) % 100) + '%;top:' + ((i * 71.73) % 100) + '%;opacity:' + (.16 + (i % 7) * .1);
+  star.style.setProperty('--delay', (-i % 11 / 3) + 's');
   document.querySelector('.sky').append(star);
 }
 get('target').textContent = target;
@@ -121,6 +142,27 @@ for (let i = letters.length - 1; i > 0; i--) {
   [letters[i], letters[j]] = [letters[j], letters[i]];
 }
 const chosen = [];
+const slots = [...target].map(() => {
+  const slot = document.createElement('span');
+  slot.setAttribute('aria-hidden', 'true');
+  get('word').append(slot);
+  return slot;
+});
+function sparkle(anchor) {
+  if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) return;
+  const rect = anchor.getBoundingClientRect();
+  for (let i = 0; i < 10; i++) {
+    const angle = i * Math.PI / 5;
+    const particle = document.createElement('i');
+    particle.className = 'spark';
+    particle.style.left = (rect.left + rect.width / 2) + 'px';
+    particle.style.top = (rect.top + rect.height / 2) + 'px';
+    particle.style.setProperty('--x', (Math.cos(angle) * 48) + 'px');
+    particle.style.setProperty('--y', (Math.sin(angle) * 48) + 'px');
+    document.body.append(particle);
+    setTimeout(() => particle.remove(), 650);
+  }
+}
 function drawThreads() {
   const area = get('letters').getBoundingClientRect();
   get('threads').setAttribute('points', chosen.map(button => {
@@ -143,7 +185,10 @@ letters.forEach((letter, index) => {
     button.classList.add('lit');
     button.disabled = true;
     drawThreads();
-    get('word').textContent = chosen.map(item => item.textContent).join('');
+    slots[chosen.length - 1].textContent = letter;
+    slots[chosen.length - 1].classList.add('lit');
+    get('word').setAttribute('aria-label', 'Letras encontradas: ' + chosen.map(item => item.textContent).join(''));
+    sparkle(button);
     const complete = chosen.length === target.length;
     get('hint').textContent = complete ? 'La estela ya está encendida.' : '';
     get('enter').hidden = !complete;
@@ -158,6 +203,7 @@ letters.forEach((letter, index) => {
 function updateOrbit() {
   const total = memories.filter(([id]) => seen.has(id)).length;
   get('progress').textContent = total + ' de ' + memories.length + ' estrellas encendidas';
+  get('orbit-meter').value = total;
   get('unlock').hidden = total !== memories.length;
 }
 for (const [id, symbol, title, copy] of memories) {
@@ -166,13 +212,17 @@ for (const [id, symbol, title, copy] of memories) {
   const icon = document.createElement('span');
   icon.setAttribute('aria-hidden', 'true');
   icon.textContent = symbol;
-  button.append(icon, title);
+  const badge = document.createElement('small');
+  badge.textContent = seen.has(id) ? '✦ Encendida' : 'Toca para abrir';
+  button.append(icon, title, badge);
   button.classList.toggle('lit', seen.has(id));
   button.addEventListener('click', () => {
     get('memory-title').textContent = title;
     get('memory-body').innerHTML = copy;
     get('memory').showModal();
+    if (!seen.has(id)) sparkle(button);
     seen.add(id);
+    badge.textContent = '✦ Encendida';
     saved.seen = [...seen];
     save();
     button.classList.add('lit');
@@ -201,7 +251,7 @@ const cast = [
 function sprites(singing, duo = false) {
   return '<div class="cast">' + (duo ? cast.slice(0, 2) : cast).map(([name, shirt, hair], index) =>
     '<div class="sprite ' + (singing && index < 2 ? 'singers' : '') + '">' +
-    (index < 2 ? '<img alt="" src="./assets/' + name.toLowerCase() + '.svg">' :
+    (index < 2 ? '<img alt="" src="./assets/' + name.toLowerCase() + '-gala.svg">' :
     '<svg aria-hidden="true" viewBox="0 0 56 56">' +
     '<path d="M14 55v-8q0-13 14-13t14 13v8" fill="' + shirt + '"/><circle cx="28" cy="24" r="17" fill="#f7c9a5"/>' +
     '<path d="M11 24C8 1 43 0 45 22c-8-2-13-6-16-10-3 6-10 9-18 12Z" fill="' + hair + '"/>' +
@@ -218,7 +268,11 @@ const scenes = [
 let stage = 0;
 function renderScene() {
   const [content, label] = scenes[stage];
-  get('scene').innerHTML = content;
+  const scene = get('scene');
+  scene.classList.remove('arriving');
+  scene.innerHTML = content;
+  void scene.offsetWidth;
+  scene.classList.add('arriving');
   get('next').textContent = label;
   get('next').hidden = !label;
 }
