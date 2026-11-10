@@ -104,6 +104,11 @@ html{overflow-x:clip}
   .bubble .bubble-caption,.bubble .bubble-status{margin-inline:auto}
   .journey{padding-inline:.1rem}
 }
+
+.sketch-cover{text-align:center;border:1px solid #a48d646e;border-radius:1.15rem;background:radial-gradient(ellipse at 50% 0,#555176,#1b2949 82%);padding:1rem;color:#ffe4a4}.sketch-cover>span{font-size:1.7rem;text-shadow:0 0 .8rem #fbd693}.sketch-cover h3,.sketch-cover p{margin:.25rem auto}
+.sketch-nav{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:.45rem;margin:.8rem 0}.sketch-nav button{min-height:2.7rem;padding:.35rem .45rem;font-size:.82rem;border-radius:.65rem}.sketch-nav button[aria-pressed=true]{background:#645039;border-color:#e5c383;color:#fff0cd}
+.memory-body .sketch-paper{margin:.7rem auto 0;padding:1rem;border-color:#d4b888;border-radius:.85rem;background:repeating-linear-gradient(#f9ebcd 0,#f9ebcd 27px,#e9d8b7 28px);color:#362a32;text-align:center}.memory-body .sketch-paper p{color:#473540;margin:.4rem auto}.memory-body .sketch-page-number{font-size:.72rem;text-transform:uppercase;letter-spacing:.1em}.sketch-paper h4{font:700 clamp(1.3rem,5vw,1.9rem) Georgia,serif;margin:.35rem 0 .7rem}.sketch-paper figure{margin:0 auto;max-width:20rem}.sketch-paper figure img{display:block;width:100%;height:auto;border:.35rem solid #fff5df;border-radius:.4rem;box-shadow:0 .25rem .7rem #49303845}.sketch-paper figcaption{font:italic .94rem/1.4 Georgia,serif;margin:.7rem auto 0}
+.memory-body .sketch-christmas{background:radial-gradient(ellipse at 50% 0,#304e59,#182b40 78%);color:#ffe4a4;border-color:#87b9a0}.memory-body .sketch-christmas p{color:#e2ede3}#sketch-tree{display:block;width:min(100%,20rem);margin:.75rem auto}#sketch-tree-progress{width:min(80%,14rem);accent-color:#f6cd80}.sketch-lights{filter:drop-shadow(0 0 3px #ffcf80)}#sketch-ornaments,#sketch-star{filter:drop-shadow(0 0 4px #ffe098)}
 </style><link rel="stylesheet" href="./player.css">
 <div class="sky" aria-hidden="true"><div class="comet"></div></div>
 <main><ol class="journey" aria-label="Recorrido"><li id="step-entry" aria-current="step">1 · Une las letras</li><li id="step-orbit">2 · Abre los recuerdos</li><li id="step-ending">3 · Última estrella</li></ol>
@@ -201,7 +206,7 @@ const memories = [
     "art",
     "✎",
     "El cuaderno de dibujos",
-    "<h3>Un pino a distancia</h3><p>Nos turnábamos para decorar el pino y mandarnos fotos. Vamos a reconstruirlo.</p><svg class=\"tree\" viewBox=\"0 0 180 180\" role=\"img\" aria-label=\"Pino navideño\"><path d=\"M82 146h16v23H82z\" fill=\"#855434\"/><path d=\"M90 16 47 75h18l-35 39h24l-32 37h136l-32-37h24l-35-39h18z\" fill=\"#245f53\" stroke=\"#8bd7bd\"/></svg><div class=\"actions\"><button id=\"decorate\">Poner un adorno</button></div><p id=\"turn\" aria-live=\"polite\" tabindex=\"-1\">Turno de Mahiru</p>"
+    "<section class=\"sketchbook\" aria-labelledby=\"sketch-title\">\n<header class=\"sketch-cover\"><span aria-hidden=\"true\">✦</span><p class=\"eyebrow\">El álbum de Mahiru y Amane</p><h3 id=\"sketch-title\">Recuerdos en papel</h3><p>Tres ilustraciones y un pino que puedes decorar.</p></header>\n<nav class=\"sketch-nav\" aria-label=\"Páginas del cuaderno\">\n<button type=\"button\" data-sketch=\"graduacion\" aria-pressed=\"true\">Graduación</button>\n<button type=\"button\" data-sketch=\"festival\" aria-pressed=\"false\">Festival</button>\n<button type=\"button\" data-sketch=\"concierto\" aria-pressed=\"false\">Concierto</button>\n<button type=\"button\" data-sketch=\"pino\" aria-pressed=\"false\">Decorar el pino</button>\n</nav>\n<article class=\"sketch-paper\" data-sketch-page=\"graduacion\"><p class=\"sketch-page-number\">01 / 04 · Del álbum</p><h4>Vestido rojo</h4><figure><img src=\"./assets/comics/photos-3.webp\" alt=\"Mahiru de rojo y Amane de negro posan en la graduación.\" width=\"418\" height=\"627\" decoding=\"async\"><figcaption>De las pocas veces que coincidíamos, esta quedó en una foto.</figcaption></figure></article>\n<article class=\"sketch-paper\" data-sketch-page=\"festival\" hidden><p class=\"sketch-page-number\">02 / 04 · Del álbum</p><h4>Luces de diciembre</h4><figure><img src=\"./assets/comics/photos-5.webp\" alt=\"Mahiru y Amane entre las luces del festival de Navidad.\" width=\"419\" height=\"627\" loading=\"lazy\" decoding=\"async\"><figcaption>Los dos de negro. Amane, además, con su sudadera de mezclilla.</figcaption></figure></article>\n<article class=\"sketch-paper\" data-sketch-page=\"concierto\" hidden><p class=\"sketch-page-number\">03 / 04 · Del álbum</p><h4>Primera fila</h4><figure><img src=\"./assets/comics/house-4.webp\" alt=\"Mahiru y Amane cantan en la sala mientras Julie y Tobey se ríen.\" width=\"418\" height=\"627\" loading=\"lazy\" decoding=\"async\"><figcaption>Julie y Tobey tuvieron los mejores asientos del concierto improvisado.</figcaption></figure></article>\n<article class=\"sketch-paper sketch-christmas\" data-sketch-page=\"pino\" hidden><p class=\"sketch-page-number\">04 / 04 · Página interactiva</p><h4>Un pino a distancia</h4><p>Un adorno tú y uno yo. Esta vez el chat se salva de las treinta fotos.</p>\n<svg id=\"sketch-tree\" viewBox=\"0 0 320 330\" role=\"img\" aria-label=\"Pino navideño que se ilumina conforme colocas adornos\">\n<defs><linearGradient id=\"pine-color\" x2=\"0\" y2=\"1\"><stop stop-color=\"#59af8b\"/><stop offset=\"1\" stop-color=\"#124a49\"/></linearGradient><radialGradient id=\"pine-sky\"><stop stop-color=\"#324665\"/><stop offset=\"1\" stop-color=\"#111a38\"/></radialGradient></defs>\n<rect x=\"1\" y=\"1\" width=\"318\" height=\"328\" rx=\"22\" fill=\"url(#pine-sky)\"/>\n<g fill=\"#f8e5b7\" opacity=\".75\"><circle cx=\"37\" cy=\"59\" r=\"2\"/><circle cx=\"78\" cy=\"42\" r=\"1.5\"/><circle cx=\"243\" cy=\"45\" r=\"2\"/><circle cx=\"278\" cy=\"90\" r=\"1.5\"/><circle cx=\"67\" cy=\"118\" r=\"2\"/><circle cx=\"262\" cy=\"151\" r=\"2\"/><circle cx=\"35\" cy=\"210\" r=\"1.5\"/><circle cx=\"283\" cy=\"228\" r=\"1.5\"/></g>\n<ellipse cx=\"161\" cy=\"288\" rx=\"117\" ry=\"20\" fill=\"#d9edf0\" opacity=\".13\"/>\n<path d=\"M150 248h20v40h-20z\" fill=\"#936145\"/>\n<path d=\"M160 41c-14 32-29 49-50 65h25c-19 29-37 43-63 60h32c-22 29-46 50-72 65 30 10 71 10 128 9 56 1 97 1 128-9-26-15-50-36-72-65h32c-26-17-44-31-63-60h25c-21-16-36-33-50-65Z\" fill=\"url(#pine-color)\" stroke=\"#93d8b0\" stroke-width=\"2\"/>\n<g fill=\"none\" stroke=\"#f6cb82\" stroke-width=\"2.5\" opacity=\".85\"><path d=\"M121 105q35 21 71 2M96 161q65 33 128 3M68 219q93 33 184 0\"/></g>\n<g fill=\"#ffdf99\" class=\"sketch-lights\"><circle cx=\"127\" cy=\"111\" r=\"2\"/><circle cx=\"156\" cy=\"119\" r=\"2\"/><circle cx=\"188\" cy=\"111\" r=\"2\"/><circle cx=\"106\" cy=\"169\" r=\"2\"/><circle cx=\"151\" cy=\"183\" r=\"2\"/><circle cx=\"199\" cy=\"178\" r=\"2\"/><circle cx=\"88\" cy=\"226\" r=\"2\"/><circle cx=\"145\" cy=\"236\" r=\"2\"/><circle cx=\"212\" cy=\"232\" r=\"2\"/><circle cx=\"247\" cy=\"221\" r=\"2\"/></g>\n<g><rect x=\"85\" y=\"264\" width=\"43\" height=\"24\" rx=\"3\" fill=\"#945967\"/><path d=\"M105 264v24m-20-13h43\" stroke=\"#f1c28d\" stroke-width=\"4\"/><rect x=\"191\" y=\"254\" width=\"43\" height=\"33\" rx=\"3\" fill=\"#44687e\"/><path d=\"M212 254v33m-21-17h43\" stroke=\"#e9c77d\" stroke-width=\"4\"/></g>\n<g id=\"sketch-ornaments\"></g><path id=\"sketch-star\" visibility=\"hidden\" d=\"m160 19 5 11 12 2-9 9 2 12-10-6-10 6 2-12-9-9 12-2z\" fill=\"#ffe6a7\" stroke=\"#fff5d5\"/>\n</svg>\n<p id=\"turn\" aria-live=\"polite\" tabindex=\"-1\">Turno de Mahiru</p><progress id=\"sketch-tree-progress\" max=\"8\" value=\"0\" aria-label=\"Adornos colocados\"></progress>\n<div class=\"actions\"><button id=\"decorate\" type=\"button\" class=\"primary\">✦ Poner un adorno</button></div></article>\n</section>"
   ],
   [
     "stickers",
@@ -613,6 +618,56 @@ function prepareLetters() {
   search.addEventListener('input', render);
   render();
 }
+function prepareSketchbook() {
+  const root = get('memory-body');
+  const buttons = [...root.querySelectorAll('[data-sketch]')];
+  const pages = [...root.querySelectorAll('[data-sketch-page]')];
+  function showSketch(id) {
+    for (const button of buttons) button.setAttribute('aria-pressed', String(button.dataset.sketch === id));
+    for (const page of pages) page.hidden = page.dataset.sketchPage !== id;
+    saved.sketchPage = id;
+    save();
+  }
+  for (const button of buttons) button.addEventListener('click', () => showSketch(button.dataset.sketch));
+  showSketch(buttons.some(button => button.dataset.sketch === saved.sketchPage) ? saved.sketchPage : 'graduacion');
+  const positions = [[159,89],[134,138],[181,134],[113,190],[155,204],[204,190],[133,223],[190,226]];
+  const colors = ['#ffdb91','#90e6da','#f49eae'];
+  const button = get('decorate');
+  const ornaments = get('sketch-ornaments');
+  const progress = get('sketch-tree-progress');
+  let count = 0;
+  function addOrnament() {
+    const [x,y] = positions[count];
+    const ornament = document.createElementNS('http://www.w3.org/2000/svg','circle');
+    ornament.setAttribute('cx',x);
+    ornament.setAttribute('cy',y);
+    ornament.setAttribute('r',6);
+    ornament.setAttribute('fill',colors[count % colors.length]);
+    ornament.setAttribute('stroke','#fff5d9');
+    ornament.setAttribute('stroke-width','1');
+    ornaments.append(ornament);
+    count++;
+  }
+  function updateTree() {
+    const complete = count === positions.length;
+    progress.value = count;
+    button.disabled = complete;
+    get('sketch-star').setAttribute('visibility', complete ? 'visible' : 'hidden');
+    get('turn').textContent = complete ? '8 de 8 adornos · Así quedó nuestro pino.' :
+      count + ' de 8 adornos · Turno de ' + (count % 2 ? 'Amane' : 'Mahiru');
+  }
+  const previous = Number.isInteger(saved.ornaments) ? Math.max(0, Math.min(saved.ornaments, positions.length)) : 0;
+  while (count < previous) addOrnament();
+  updateTree();
+  button.onclick = () => {
+    if (button.disabled) return;
+    addOrnament();
+    saved.ornaments = count;
+    save();
+    updateTree();
+    if (button.disabled) get('turn').focus();
+  };
+}
 function prepareMemory(id) {
   if (id === 'letters') prepareLetters();
   if (id === 'songs') {
@@ -628,34 +683,7 @@ function prepareMemory(id) {
       openFinale();
     };
   }
-  if (id === 'art') {
-    const positions = [[90,38],[72,75],[106,69],[57,112],[93,106],[122,124],[78,137],[110,143]];
-    const colors = ['#ffdb91','#90e6da','#f49eae'];
-    const button = get('decorate');
-    const tree = get('memory-body').querySelector('svg');
-    let count = 0;
-    function addOrnament() {
-      const [x,y] = positions[count];
-      const ornament = document.createElementNS('http://www.w3.org/2000/svg','circle');
-      ornament.setAttribute('cx',x);
-      ornament.setAttribute('cy',y);
-      ornament.setAttribute('r',4);
-      ornament.setAttribute('fill',colors[count % colors.length]);
-      tree.append(ornament);
-      count++;
-      button.disabled = count === positions.length;
-      get('turn').textContent = button.disabled ? 'Así quedó nuestro pino.' : 'Turno de ' + (count % 2 ? 'Amane' : 'Mahiru');
-    }
-    const previous = Number.isInteger(saved.ornaments) ? Math.max(0, Math.min(saved.ornaments, positions.length)) : 0;
-    while (count < previous) addOrnament();
-    button.onclick = () => {
-      if (button.disabled) return;
-      addOrnament();
-      saved.ornaments = count;
-      save();
-      if (button.disabled) get('turn').focus();
-    };
-  }
+  if (id === 'art') prepareSketchbook();
 }
 get('next').onclick = () => {
   if (stage < scenes.length - 1) stage++;
