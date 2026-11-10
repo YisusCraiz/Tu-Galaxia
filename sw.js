@@ -1,4 +1,4 @@
-const CACHE = 'tu-galaxia-shell-v3';
+const CACHE = 'tu-galaxia-shell-v4';
 const scope = new URL(self.registration.scope);
 const home = new URL('./', scope).href;
 const files = ['./', './manifest.webmanifest', './assets/icon-180.png', './assets/icon-192.png',

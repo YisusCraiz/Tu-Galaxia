@@ -16,3 +16,6 @@
 #player-mini button{border-radius:.55rem}#mini-open{flex:1;min-width:0;display:flex;align-items:center;gap:.55rem;text-align:left;padding:.2rem;border:0;background:transparent}#mini-cover{width:2.5rem;height:2.5rem;border-radius:.3rem;object-fit:cover}#mini-title{overflow:hidden;text-overflow:ellipsis;white-space:nowrap}#mini-toggle{width:2.65rem;height:2.65rem;padding:0}body:has(#player-mini:not([hidden])) main{padding-bottom:5rem}
 #playlist-dialog form:not([method=dialog]){text-align:left;margin:1rem auto}#playlist-dialog label{display:block;font-size:.82rem;margin-bottom:.35rem}#playlist-dialog input,#playlist-dialog select{margin-bottom:.5rem}#playlist-title{font-size:1.55rem;overflow-wrap:anywhere}
 .player-controls button:disabled,#mini-toggle:disabled{opacity:.55}
+
+.track-ready { color: #86efac; }
+.track-pending { color: #fcd58c; }

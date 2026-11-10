@@ -87,7 +87,7 @@
     queue.unshift(current);
   }
   function select(track, autoplay = false, nextQueue = null) {
-    if (track.id !== current?.id) {
+    if (track.id !== current?.id || (canPlay(track.id) && !audio.getAttribute('src'))) {
       audio.pause();
       current = track;
       if (canPlay(track.id)) audio.src = sources[track.id];
@@ -138,7 +138,12 @@
       const title = document.createElement('strong');
       title.textContent = track.title;
       const detail = document.createElement('small');
-      detail.textContent = track.id + (canPlay(track.id) ? ' · Disponible' : ' · Grabación pendiente');
+      const available = canPlay(track.id);
+      const icon = document.createElement('span');
+      icon.className = available ? 'track-ready' : 'track-pending';
+      icon.setAttribute('aria-hidden', 'true');
+      icon.textContent = available ? '▶' : '◷';
+      detail.append(track.id + ' · ', icon, available ? ' Disponible' : ' Grabación pendiente');
       label.append(title, detail);
       row.append(art, label);
       row.addEventListener('click', () => { select(track, canPlay(track.id), library); openPlayer(); });
@@ -235,4 +240,8 @@
       renderLibrary();
     }
   };
+  window.galaxiaAudioReady?.then(() => {
+    if (current && canPlay(current.id)) select(current);
+    if (panel?.isConnected) renderLibrary();
+  });
 })();
