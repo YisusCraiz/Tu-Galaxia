@@ -13,7 +13,7 @@
 .sky{position:fixed;inset:0;pointer-events:none;overflow:hidden}.sky i{position:absolute;width:2px;height:2px;background:white;border-radius:50%;box-shadow:0 0 7px #c8e5ff}
 .comet{position:absolute;top:19%;left:59%;width:32vw;height:2px;background:linear-gradient(90deg,transparent,#73dacf,var(--gold));transform:rotate(-26deg);filter:drop-shadow(0 0 8px #84e9d9);animation:arrive 1.7s ease both}.comet::after{content:"";position:absolute;right:0;top:-3px;width:8px;height:8px;border-radius:50%;background:var(--gold);box-shadow:0 0 18px var(--gold)}
 @keyframes arrive{from{translate:-36vw 18vw;opacity:0}to{translate:0;opacity:1}}
-main{position:relative;width:min(100% - 2rem,55rem);margin:auto;text-align:center;padding:clamp(3rem,10vh,7rem) 0 3rem}
+main{position:relative;width:min(calc(100% - 2rem),55rem);margin-inline:auto;text-align:center;padding:clamp(3rem,10vh,7rem) 0 3rem}
 .eyebrow{font-size:.7rem;font-weight:700;letter-spacing:.26em;text-transform:uppercase;color:var(--mint)}h1,h2{font-family:Georgia,serif;font-weight:400;line-height:1.06}h1{font-size:clamp(3rem,10vw,7rem);margin:.2em 0;color:#fff2d5}h2{font-size:clamp(2rem,6vw,4rem);margin:.2em 0}p{margin:.65rem auto;max-width:39ch;color:var(--muted)}strong{color:var(--gold)}
 button{font:inherit;color:inherit;cursor:pointer;border:1px solid #5a718c;background:#111f35;border-radius:2rem;padding:.65rem 1.1rem}button:hover,button:focus-visible{border-color:var(--mint);outline:2px solid transparent;box-shadow:0 0 0 2px #90e6da88}button:disabled{cursor:default}button:disabled:hover{box-shadow:none}
 .letters{position:relative;display:grid;grid-template-columns:repeat(3,1fr);gap:1.05rem;justify-items:center;max-width:23rem;margin:1.8rem auto}.letters svg{position:absolute;inset:0;width:100%;height:100%;overflow:visible;pointer-events:none}.letters polyline{fill:none;stroke:var(--gold);stroke-width:2;filter:drop-shadow(0 0 5px var(--gold))}
@@ -86,6 +86,24 @@ body:has(dialog[open]){overflow:hidden}
 
 .sticker-shelf header{text-align:center;margin-bottom:1rem}.sticker-shelf header h3{margin:.25rem 0}.sticker-shelf header p{margin:.35rem 0}.sticker-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:.65rem}.sticker-card{min-width:0;margin:0;padding:.4rem;border:1px solid #7087a680;border-radius:.9rem;background:#15223b}.sticker-art{aspect-ratio:1;border-radius:.65rem;background:radial-gradient(ellipse at 50% 62%,#4b4268,#1d2c4a 75%);overflow:hidden}.sticker-art img{display:block;width:100%;height:100%;object-fit:contain}.sticker-card figcaption{display:flex;align-items:center;justify-content:space-between;gap:.15rem .35rem;flex-wrap:wrap;padding:.4rem .25rem}.sticker-card figcaption span{font-size:.75rem;color:#c6d4ea}.sticker-card a{display:grid;place-items:center;min-height:2.75rem;padding:.25rem;border:1px solid #aa945e;border-radius:.6rem;background:#302b41;color:#ffe6a9;text-decoration:none;font-size:.77rem;font-weight:650;text-align:center}.sticker-card a:hover,.sticker-card a:focus-visible{outline:2px solid var(--mint);outline-offset:2px}
 .sticker-reactions{margin-top:1.5rem;padding-top:1rem;border-top:1px solid #8398b75c}
+
+/* Keep decorative overflow outside the document's horizontal scroll area. */
+html{overflow-x:clip}
+.orbit{width:100%}
+.orbit::before{inset:-.45rem -.3rem;transform:none;pointer-events:none}
+.bubble{min-width:0}
+.bubble b,.bubble small{max-width:100%;overflow-wrap:anywhere}
+@media(max-width:540px){
+  main{width:min(calc(100% - 1.75rem),55rem)}
+  #orbit>h2{font-size:clamp(1.8rem,8vw,2.65rem);text-wrap:balance}
+  #orbit>p{margin-inline:auto;text-wrap:balance}
+  .orbit{gap:.65rem;grid-auto-rows:1fr;margin:1.4rem auto}
+  .orbit::before{inset:-.35rem -.3rem}
+  .bubble{justify-items:center;text-align:center;align-content:center;padding:.75rem .5rem}
+  .bubble::after{right:.4rem;top:.3rem}
+  .bubble .bubble-caption,.bubble .bubble-status{margin-inline:auto}
+  .journey{padding-inline:.1rem}
+}
 </style><link rel="stylesheet" href="./player.css">
 <div class="sky" aria-hidden="true"><div class="comet"></div></div>
 <main><ol class="journey" aria-label="Recorrido"><li id="step-entry" aria-current="step">1 · Une las letras</li><li id="step-orbit">2 · Abre los recuerdos</li><li id="step-ending">3 · Última estrella</li></ol>
