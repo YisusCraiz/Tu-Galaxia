@@ -76,10 +76,18 @@ body:has(dialog[open]){overflow:hidden}
 .comic-nav{position:sticky;bottom:0;display:flex;justify-content:center;gap:.55rem;margin:.65rem 0 0;padding:.45rem .25rem;background:#111b30;border-radius:.75rem}
 .comic-nav button{min-height:2.75rem}
 @media(max-width:380px){.comic-nav button{padding:.55rem .65rem;font-size:.88rem}.journey{gap:.3rem}}
+
+.reset-tools{display:flex;justify-content:flex-end;margin:-.65rem 0 .2rem}.reset-tools button{width:2.75rem;height:2.75rem;padding:0;border-color:#7182a385;background:#101a31b8;color:#c0cde2;font-size:1.15rem}
+#reset-form label{display:block;margin:.85rem 0 .3rem;color:var(--gold)}#reset-code{width:7rem;padding:.45rem .65rem;border-radius:.65rem;border:1px solid #8296b6;background:#111b30;color:var(--ink);font:inherit;text-align:center;letter-spacing:.25em}#reset-error{color:#ffb9b2;min-height:1.4em}
+.portrait-stage img{transform-origin:50% 95%;animation:portrait-rise .8s ease-out both,mahiru-play 6.5s ease-in-out 1.25s 3}
+.portrait-stage img:last-child{animation:portrait-rise .8s ease-out .13s both,amane-play 6.5s ease-in-out 1.4s 3}
+@keyframes mahiru-play{0%,30%,100%{translate:0 0;rotate:0deg}8%{translate:0 -7px;rotate:4deg}17%{translate:0 0;rotate:-2deg}}
+@keyframes amane-play{0%,30%,100%{translate:0 0;rotate:0deg}8%{translate:0 -5px;rotate:-4deg}17%{translate:0 0;rotate:2deg}}
 </style><link rel="stylesheet" href="./player.css">
 <div class="sky" aria-hidden="true"><div class="comet"></div></div>
 <main><ol class="journey" aria-label="Recorrido"><li id="step-entry" aria-current="step">1 · Une las letras</li><li id="step-orbit">2 · Abre los recuerdos</li><li id="step-ending">3 · Última estrella</li></ol>
 <section id="entry">
+<div class="reset-tools"><button type="button" id="reset-open" aria-label="Reiniciar progreso de este dispositivo" title="Reiniciar progreso">↻</button></div>
 <div class="eyebrow">Un cielo de recuerdos</div>
 <h1>Mi estrella fugaz</h1>
 <div class="portrait-stage" aria-hidden="true"><img src="./assets/mahiru-gala.svg" alt="" width="269" height="360"><span>✦</span><img src="./assets/amane-gala.svg" alt="" width="199" height="360"></div>
@@ -112,6 +120,14 @@ body:has(dialog[open]){overflow:hidden}
 <li><strong>iPhone:</strong> ábrela en Safari, toca <b>Compartir</b> y elige <b>Añadir a pantalla de inicio</b>. Si aparece <b>Abrir como app web</b>, déjalo activado.</li></ol>
 <form method="dialog" class="actions"><button>Entendido</button></form></dialog>
 <dialog id="memory" aria-labelledby="memory-title"><form method="dialog"><button class="close-memory" aria-label="Cerrar recuerdo">×</button></form><div class="eyebrow">En la estela</div><h2 id="memory-title"></h2><div id="memory-body" class="memory-body"></div><form method="dialog" class="actions"><button>Volver a la constelación</button></form></dialog>
+<dialog id="reset-dialog" aria-labelledby="reset-title">
+<h2 id="reset-title">Reiniciar el progreso</h2>
+<p>Se borrarán de este dispositivo las estrellas encendidas, el avance de lectura, los favoritos, los adornos y las playlists.</p>
+<form id="reset-form"><label for="reset-code">Código de reinicio</label>
+<input id="reset-code" type="password" inputmode="numeric" maxlength="4" autocomplete="off" required>
+<p id="reset-error" role="alert"></p><button type="submit" class="primary">Reiniciar todo</button></form>
+<form method="dialog" class="actions"><button>Cancelar</button></form>
+</dialog>
 <audio id="galaxia-audio" preload="metadata"></audio>
 <aside id="player-mini" aria-label="Minirreproductor" hidden><button id="mini-open" type="button"><img id="mini-cover" width="40" height="40" alt=""><span id="mini-title"></span></button><button id="mini-toggle" type="button" aria-label="Reproducir">▶</button></aside>
 <dialog id="player-dialog" aria-labelledby="player-title">
@@ -158,7 +174,7 @@ const memories = [
     "comics",
     "▤",
     "Nuestra historia en viñetas",
-    "<p class=\"comic-intro\">Cuatro episodios, seis páginas cada uno. Tu página queda guardada para que puedas volver donde te quedaste.</p>\n<div class=\"comic-reader\">\n<label for=\"comic-episode\">Elige un episodio</label>\n<select id=\"comic-episode\"><option value=\"school\">01 · ¿Ya conseguiste novio, eh? · Chibi</option><option value=\"house\">02 · Míranos ahora · Manhwa</option><option value=\"clean\">03 · Nos tocó el aseo · Chibi</option><option value=\"tree\">04 · El pino de las treinta fotos · Manhwa</option></select>\n<p id=\"comic-count\" class=\"comic-count\" role=\"status\"></p>\n<div id=\"comic-panel\"></div>\n<nav class=\"comic-nav\" aria-label=\"Páginas del episodio\"><button type=\"button\" id=\"comic-prev\">← Anterior</button><button type=\"button\" id=\"comic-next\">Siguiente →</button></nav>\n</div>"
+    "<p class=\"comic-intro\">Seis episodios, seis páginas cada uno. Tu página queda guardada para que puedas volver donde te quedaste.</p>\n<div class=\"comic-reader\">\n<label for=\"comic-episode\">Elige un episodio</label>\n<select id=\"comic-episode\"><option value=\"school\">01 · ¿Ya conseguiste novio, eh? · Chibi</option><option value=\"house\">02 · Míranos ahora · Manhwa</option><option value=\"clean\">03 · Nos tocó el aseo · Chibi</option><option value=\"tree\">04 · El pino de las treinta fotos · Manhwa</option><option value=\"message\">05 · El mensaje que sí mandé · Chibi</option><option value=\"film\">06 · Una película, dos casas · Manhwa</option></select>\n<p id=\"comic-count\" class=\"comic-count\" role=\"status\"></p>\n<div id=\"comic-panel\"></div>\n<nav class=\"comic-nav\" aria-label=\"Páginas del episodio\"><button type=\"button\" id=\"comic-prev\">← Anterior</button><button type=\"button\" id=\"comic-next\">Siguiente →</button></nav>\n</div>"
   ],
   [
     "art",
@@ -390,6 +406,22 @@ const comicEpisodes = {
     ["¿Otra foto?","Un adorno más, otro mensaje. Luego otro. Cuando nos dimos cuenta, el chat ya estaba lleno de fotos casi iguales."],
     ["Listo para Navidad","Al final sí terminamos el pino. Para entonces, esperar la siguiente foto se había vuelto mi parte favorita."],
     ["Todavía lo veo","De todas las fotos que pudimos haber mandado ese diciembre, me alegra que nos tomáramos el tiempo de mandar tantas de ese árbol."]
+  ],
+  message: [
+    ["El número","Ya en prepa, una amiga en común me pasó tu número. Conseguirlo era la parte fácil."],
+    ["El saludo","Llevaba años sin hablarte. Abrí el chat, miré el teclado y me quedé pensando cómo empezar."],
+    ["Enviar","Me armé de valor y te escribí. Ahí se acabó lo que podía ensayar. Ahora tocaba esperar."],
+    ["Tu respuesta","Contestaste y volvimos a platicar de nosotros y de cuando éramos niños. Se me fue quitando la pena."],
+    ["Un mensaje más","Al rato ya había otro tema y luego otro. Así volvimos a saber el uno del otro, a puro mensaje."],
+    ["Hasta el día siguiente","Después llegaron los videos al despertar, los de la comida y las llamadas que duraban hasta el día siguiente. Qué bueno que sí mandé aquel mensaje."]
+  ],
+  film: [
+    ["Plan de noche","Nos tocó ver El cadáver de la novia, una película que a ti siempre te había gustado. Cada quien estaba en su casa."],
+    ["Las dos pantallas","Abrimos Watch2Gether para verla al mismo tiempo. Para entonces, hacer planes así ya se nos daba bastante bien."],
+    ["Empieza la función","Se apagaron las luces de la película. Del otro lado seguías tú, viendo las mismas escenas."],
+    ["Al mismo tiempo","Podíamos reírnos o reaccionar justo cuando pasaba algo. Eso era lo divertido de verla juntos aunque cada quien tuviera su pantalla."],
+    ["Una de tus favoritas","Me gustó ver contigo una película que ya querías tanto. Es de esas cosas que ahora me recuerdan a ti aunque las vea por mi cuenta."],
+    ["Después de los créditos","Lo que más me acuerdo de esa noche es lo sencillo que fue hacer un plan de los dos. Solo había que ponernos de acuerdo en qué ver."]
   ]
 };
 function openComicReader() {
@@ -600,6 +632,37 @@ get('next').onclick = () => {
     heading.focus();
   }
 };
+function prepareReset() {
+  const dialog = get('reset-dialog');
+  const form = get('reset-form');
+  const code = get('reset-code');
+  const error = get('reset-error');
+  get('reset-open').addEventListener('click', () => {
+    form.reset();
+    error.textContent = '';
+    code.removeAttribute('aria-invalid');
+    dialog.showModal();
+    code.focus();
+  });
+  form.addEventListener('submit', event => {
+    event.preventDefault();
+    if (code.value !== '1234') {
+      error.textContent = 'Código incorrecto.';
+      code.setAttribute('aria-invalid', 'true');
+      code.select();
+      return;
+    }
+    try {
+      localStorage.removeItem(key);
+      localStorage.removeItem('tu-galaxia-player-v1');
+    } catch {
+      error.textContent = 'No se pudo reiniciar el progreso en este navegador.';
+      return;
+    }
+    location.reload();
+  });
+}
+prepareReset();
 const installPanel = get('install-panel');
 let installPrompt;
 const standalone = window.matchMedia('(display-mode: standalone)');
