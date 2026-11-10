@@ -1,8 +1,8 @@
-const CACHE = 'tu-galaxia-shell-v2';
+const CACHE = 'tu-galaxia-shell-v3';
 const scope = new URL(self.registration.scope);
 const home = new URL('./', scope).href;
 const files = ['./', './manifest.webmanifest', './assets/icon-180.png', './assets/icon-192.png',
-  './assets/icon-512.png', './assets/mahiru-gala.svg', './assets/amane-gala.svg', './assets/mahiru.svg', './assets/amane.svg']
+  './assets/icon-512.png', './assets/mahiru-gala.svg', './assets/amane-gala.svg', './assets/mahiru.svg', './assets/amane.svg', './player.css', './audio-catalog.js', './player.js']
   .map(path => new URL(path, scope).href);
 const assets = new Set(files.slice(1));
 
