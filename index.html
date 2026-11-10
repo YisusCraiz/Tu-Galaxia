@@ -62,6 +62,20 @@ main{padding-top:clamp(2rem,6vh,5rem)}h1{background:linear-gradient(110deg,#fff6
 #letter-next-unread{border-color:#b99b65;color:#ffe5ac;background:#29334c;font-size:.82rem}#letter-next-unread:disabled{opacity:.55}
 #letter-read-meter{flex-basis:100%;width:100%;height:.55rem;accent-color:#e9ba6e}
 .memory-body .letter-complete{padding:.75rem .9rem;color:#ffe3a2;background:#332b43;border:1px solid #be9a67;border-radius:.8rem}
+
+dialog{max-width:calc(100vw - 1rem);padding:clamp(.95rem,4vw,2rem);max-height:calc(100dvh - 2rem);overscroll-behavior:contain}
+body:has(dialog[open]){overflow:hidden}
+.memory-body{overflow-wrap:anywhere}
+#memory.comic-modal{width:min(44rem,calc(100% - 1rem))}
+.comic-reader label{display:block;color:var(--gold);font-weight:650;margin:.4rem 0}
+#comic-episode{width:100%;max-width:100%;min-height:2.75rem;color:var(--ink);background:#14223b;border:1px solid #8296b6;border-radius:.65rem;padding:.35rem .5rem;font:inherit}
+.comic-intro{margin-top:.7rem}.comic-reader .comic-count{scroll-margin-top:1rem;margin:.75rem 0;color:#a8e9e2}
+.comic-page{padding:0 0 1rem;margin:0 auto;max-width:34rem;border-color:#7a89a2}
+.comic-page-art{width:100%;height:auto;display:block;aspect-ratio:2/3;object-fit:contain;background:#131a2a}
+.comic-page h3,.comic-page p{margin:.65rem .9rem 0}
+.comic-nav{position:sticky;bottom:0;display:flex;justify-content:center;gap:.55rem;margin:.65rem 0 0;padding:.45rem .25rem;background:#111b30;border-radius:.75rem}
+.comic-nav button{min-height:2.75rem}
+@media(max-width:380px){.comic-nav button{padding:.55rem .65rem;font-size:.88rem}.journey{gap:.3rem}}
 </style><link rel="stylesheet" href="./player.css">
 <div class="sky" aria-hidden="true"><div class="comet"></div></div>
 <main><ol class="journey" aria-label="Recorrido"><li id="step-entry" aria-current="step">1 · Une las letras</li><li id="step-orbit">2 · Abre los recuerdos</li><li id="step-ending">3 · Última estrella</li></ol>
@@ -144,7 +158,7 @@ const memories = [
     "comics",
     "▤",
     "Nuestra historia en viñetas",
-    "<small>Primer episodio · 3 viñetas</small><h3>¿Ya conseguiste novio, eh?</h3>\n<div class=\"comic-reader\" id=\"comic-reader\">\n<p id=\"comic-count\" class=\"comic-count\" aria-live=\"polite\"></p>\n<div id=\"comic-panel\"></div>\n<div class=\"actions\"><button type=\"button\" id=\"comic-prev\">← Anterior</button><button type=\"button\" id=\"comic-next\">Siguiente →</button></div>\n</div>"
+    "<p class=\"comic-intro\">Dos episodios, seis páginas cada uno. Tu página queda guardada para que puedas volver donde te quedaste.</p>\n<div class=\"comic-reader\">\n<label for=\"comic-episode\">Elige un episodio</label>\n<select id=\"comic-episode\"><option value=\"school\">01 · ¿Ya conseguiste novio, eh? · Chibi</option><option value=\"house\">02 · Míranos ahora · Manhwa</option></select>\n<p id=\"comic-count\" class=\"comic-count\" role=\"status\"></p>\n<div id=\"comic-panel\"></div>\n<nav class=\"comic-nav\" aria-label=\"Páginas del episodio\"><button type=\"button\" id=\"comic-prev\">← Anterior</button><button type=\"button\" id=\"comic-next\">Siguiente →</button></nav>\n</div>"
   ],
   [
     "art",
@@ -278,6 +292,8 @@ for (const [id, symbol, title, copy] of memories) {
   button.addEventListener('click', () => {
     get('memory-title').textContent = title;
     get('memory-body').innerHTML = copy;
+    get('memory').classList.toggle('comic-modal', id === 'comics');
+    get('memory').scrollTop = 0;
     get('memory').showModal();
     if (!seen.has(id)) sparkle(button);
     seen.add(id);
@@ -342,27 +358,75 @@ function openFinale() {
   show('ending');
 }
 get('finale').onclick = openFinale;
+const comicEpisodes = {
+  school: [
+    ['La visita', 'Segundo de secundaria. Acompañé a mi mamá a la primaria. Pensé que sería una visita cualquiera.'],
+    ['Una cara conocida', 'Tú llegaste por tu hermana. Yo te reconocí desde el pasillo.'],
+    ['Ensayo mental', 'Solo tenía que saludar. Me puse a pensar tanto en parecer tranquilo que se me olvidó lo que iba a decir.'],
+    ['El saludo', '«Holaaaa, ¿cómo estás? ¿Ya conseguiste novio, eh?»'],
+    ['Silencio de emergencia', 'En cuanto lo dije quise volver a entrar por la puerta y empezar de nuevo. Tú ya te estabas riendo.'],
+    ['Años después', 'Todavía sacas el saludo de vez en cuando. Yo sigo esperando a que prescriba.']
+  ],
+  house: [
+    ['Algún día', 'Cuando éramos niños dijimos que algún día estaríamos juntos en una casa. Nos faltaba averiguar cuándo.'],
+    ['La sala', 'Pasaron años. Cuando por fin coincidimos en esa casa, Julie y Tobey estaban ahí con nosotros.'],
+    ['La canción', 'Sonó Sin miedo. Nos bastó mirarnos para saber que ninguno se iba a quedar callado.'],
+    ['Primera fila', 'Cantamos a todo pulmón. Julie y Tobey se ganaron los mejores asientos sin comprar boleto.'],
+    ['Míranos ahora', 'Me abrazaste y dijiste: «Éramos tan pequeños… y míranos ahora».'],
+    ['La ventana encendida', 'Cuando vuelvo a ese recuerdo, siempre encuentro la misma casa, la misma canción y a los cuatro ahí. Feliz cumpleaños, Mahiru.']
+  ]
+};
 function openComicReader() {
-  const panels = [
-    ['Un encuentro en la primaria', 'Segundo de secundaria. Yo acompañaba a mi mamá. Tú venías por tu hermana.', ''],
-    ['El saludo de Amane', 'Tenía muchas opciones para saludar. Elegí ésta.', '«Holaaaa, ¿cómo estás? ¿Ya conseguiste novio, eh?»'],
-    ['Años después', 'Sarai todavía se burla de eso. Amane sigue esperando que prescriba.', '']
-  ];
+  const episode = get('comic-episode');
+  const count = get('comic-count');
   const prev = get('comic-prev');
   const next = get('comic-next');
+  const progress = saved.comicPages && typeof saved.comicPages === 'object' ? saved.comicPages : {};
+  const shelf = Object.keys(comicEpisodes);
+  let story = shelf.includes(saved.comicEpisode) ? saved.comicEpisode : shelf[0];
   let page = 0;
   function render() {
-    const [title, caption, speech] = panels[page];
-    get('comic-count').textContent = 'Viñeta ' + (page + 1) + ' de ' + panels.length;
-    get('comic-panel').innerHTML = '<article class="comic-panel"><h3>' + title +
-      '</h3><div class="comic-cast" aria-hidden="true"><img src="./assets/mahiru.svg" alt=""><img src="./assets/amane.svg" alt=""></div>' +
-      (speech ? '<blockquote>' + speech + '</blockquote>' : '') + '<p>' + caption + '</p></article>';
+    const pages = comicEpisodes[story];
+    const [title, caption] = pages[page];
+    count.textContent = 'Página ' + (page + 1) + ' de ' + pages.length;
+    const art = document.createElement('img');
+    art.src = './assets/comics/' + story + '-' + (page + 1) + '.webp';
+    art.alt = '';
+    art.className = 'comic-page-art';
+    const heading = document.createElement('h3');
+    heading.textContent = title;
+    const copy = document.createElement('p');
+    copy.textContent = caption;
+    const frame = document.createElement('article');
+    frame.className = 'comic-panel comic-page';
+    frame.append(art, heading, copy);
+    get('comic-panel').replaceChildren(frame);
     prev.disabled = page === 0;
-    next.disabled = page === panels.length - 1;
+    next.disabled = page === pages.length - 1;
+    progress[story] = page;
+    saved.comicPages = progress;
+    saved.comicEpisode = story;
+    save();
   }
-  prev.onclick = () => { if (page > 0) { page--; render(); if (prev.disabled) next.focus(); } };
-  next.onclick = () => { if (page < panels.length - 1) { page++; render(); if (next.disabled) prev.focus(); } };
-  render();
+  function pick(id) {
+    story = id;
+    episode.value = id;
+    page = Number.isInteger(progress[id]) ? Math.max(0, Math.min(progress[id], comicEpisodes[id].length - 1)) : 0;
+    render();
+  }
+  function move(delta) {
+    const candidate = page + delta;
+    if (candidate < 0 || candidate >= comicEpisodes[story].length) return;
+    page = candidate;
+    render();
+    if (prev.disabled) next.focus({preventScroll:true});
+    if (next.disabled) prev.focus({preventScroll:true});
+    count.scrollIntoView({block:'start'});
+  }
+  episode.onchange = () => pick(episode.value);
+  prev.onclick = () => move(-1);
+  next.onclick = () => move(1);
+  pick(story);
 }
 function prepareSongSearch() {
   const search = get('song-search');
