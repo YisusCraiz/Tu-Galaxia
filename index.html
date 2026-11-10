@@ -83,6 +83,8 @@ body:has(dialog[open]){overflow:hidden}
 .portrait-stage img:last-child{animation:portrait-rise .8s ease-out .13s both,amane-play 6.5s ease-in-out 1.4s 3}
 @keyframes mahiru-play{0%,30%,100%{translate:0 0;rotate:0deg}8%{translate:0 -7px;rotate:4deg}17%{translate:0 0;rotate:-2deg}}
 @keyframes amane-play{0%,30%,100%{translate:0 0;rotate:0deg}8%{translate:0 -5px;rotate:-4deg}17%{translate:0 0;rotate:2deg}}
+
+.sticker-shelf header{text-align:center;margin-bottom:1rem}.sticker-shelf header h3{margin:.25rem 0}.sticker-shelf header p{margin:.35rem 0}.sticker-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:.65rem}.sticker-card{min-width:0;margin:0;padding:.4rem;border:1px solid #7087a680;border-radius:.9rem;background:#15223b}.sticker-art{aspect-ratio:1;border-radius:.65rem;background:radial-gradient(ellipse at 50% 62%,#4b4268,#1d2c4a 75%);overflow:hidden}.sticker-art img{display:block;width:100%;height:100%;object-fit:contain}.sticker-card figcaption{display:flex;align-items:center;justify-content:space-between;gap:.15rem .35rem;flex-wrap:wrap;padding:.4rem .25rem}.sticker-card figcaption span{font-size:.75rem;color:#c6d4ea}.sticker-card a{display:grid;place-items:center;min-height:2.75rem;padding:.25rem;border:1px solid #aa945e;border-radius:.6rem;background:#302b41;color:#ffe6a9;text-decoration:none;font-size:.77rem;font-weight:650;text-align:center}.sticker-card a:hover,.sticker-card a:focus-visible{outline:2px solid var(--mint);outline-offset:2px}
 </style><link rel="stylesheet" href="./player.css">
 <div class="sky" aria-hidden="true"><div class="comet"></div></div>
 <main><ol class="journey" aria-label="Recorrido"><li id="step-entry" aria-current="step">1 · Une las letras</li><li id="step-orbit">2 · Abre los recuerdos</li><li id="step-ending">3 · Última estrella</li></ol>
@@ -186,7 +188,7 @@ const memories = [
     "stickers",
     "☄",
     "La caja de stickers",
-    "<p>Vista previa de los cuatro personajes del concierto.</p>"
+    "<section class=\"sticker-shelf\" aria-labelledby=\"sticker-title\"><header><p class=\"eyebrow\">Colección 01 · Mahiru y Amane</p><h3 id=\"sticker-title\">De la galaxia a tu teléfono</h3><p>Cuatro stickers de cuerpo completo en PNG con fondo transparente.</p></header><div class=\"sticker-grid\"><figure class=\"sticker-card\"><div class=\"sticker-art\"><img src=\"./assets/stickers/mahiru-casual.png\" alt=\"Mahiru con su celular rosa\" width=\"512\" height=\"512\" loading=\"lazy\" decoding=\"async\"></div><figcaption><strong>Mahiru</strong><span>Casual</span></figcaption><a href=\"./assets/stickers/mahiru-casual.png\" download=\"mahiru-casual.png\" aria-label=\"Descargar PNG de Mahiru, versión Casual\">↓ Descargar PNG</a></figure><figure class=\"sticker-card\"><div class=\"sticker-art\"><img src=\"./assets/stickers/amane-casual.png\" alt=\"Amane con lentes y camiseta blanca\" width=\"512\" height=\"512\" loading=\"lazy\" decoding=\"async\"></div><figcaption><strong>Amane</strong><span>Casual</span></figcaption><a href=\"./assets/stickers/amane-casual.png\" download=\"amane-casual.png\" aria-label=\"Descargar PNG de Amane, versión Casual\">↓ Descargar PNG</a></figure><figure class=\"sticker-card\"><div class=\"sticker-art\"><img src=\"./assets/stickers/mahiru-gala.png\" alt=\"Mahiru con vestido de constelaciones\" width=\"512\" height=\"512\" loading=\"lazy\" decoding=\"async\"></div><figcaption><strong>Mahiru</strong><span>Gala</span></figcaption><a href=\"./assets/stickers/mahiru-gala.png\" download=\"mahiru-gala.png\" aria-label=\"Descargar PNG de Mahiru, versión Gala\">↓ Descargar PNG</a></figure><figure class=\"sticker-card\"><div class=\"sticker-art\"><img src=\"./assets/stickers/amane-gala.png\" alt=\"Amane con traje negro de gala\" width=\"512\" height=\"512\" loading=\"lazy\" decoding=\"async\"></div><figcaption><strong>Amane</strong><span>Gala</span></figcaption><a href=\"./assets/stickers/amane-gala.png\" download=\"amane-gala.png\" aria-label=\"Descargar PNG de Amane, versión Gala\">↓ Descargar PNG</a></figure></div></section>"
   ]
 ];
 const seen = new Set(Array.isArray(saved.seen) ? saved.seen : []);
@@ -287,7 +289,7 @@ function updateOrbit() {
 }
 const descriptions = {
   memories: 'De primaria al reencuentro', songs: 'Música y recuerdos', letters: 'Palabras de Amane',
-  comics: 'Anécdotas en viñetas', art: 'Un pino para decorar', stickers: 'Los personajes del concierto'
+  comics: 'Anécdotas en viñetas', art: 'Un pino para decorar', stickers: 'Chibis para descargar'
 };
 for (const [id, symbol, title, copy] of memories) {
   const button = document.createElement('button');
@@ -591,7 +593,6 @@ function prepareMemory(id) {
       openFinale();
     };
   }
-  if (id === 'stickers') get('memory-body').insertAdjacentHTML('beforeend', sprites(false));
   if (id === 'art') {
     const positions = [[90,38],[72,75],[106,69],[57,112],[93,106],[122,124],[78,137],[110,143]];
     const colors = ['#ffdb91','#90e6da','#f49eae'];
